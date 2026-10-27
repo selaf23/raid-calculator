@@ -351,7 +351,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
       <div class="hero-copy">
         <div class="kicker">Tu plan, claro y simple</div>
         <h1>Armá tu plan de cuentas<br>sin vueltas</h1>
-        <p>Elegí cuántas cuentas querés, cuánto podés invertir y cuánta esencia tenés. La página te dice qué nivel conviene, cuánto podés ganar y en qué orden comprar.</p>
+        <p>Elegí cuántas cuentas querés, cuánto podés invertir y cuánta esencia tenés. La página te dice qué meta conviene, cuánto podés ganar y en qué orden comprar.</p>
         <div class="tip">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
           <div>
@@ -409,20 +409,20 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
   <section id="tabla" class="section">
     <div class="section-head">
       <div>
-        <h2>Compará los niveles de un vistazo</h2>
+        <h2>Compará las metas de un vistazo</h2>
         <p class="sub">Cada tarjeta es una meta de retiro. Tocá una para probarla en tu plan. Los números son por cuenta y con el escenario base: Mint pagado con tokens depositados y oro del Keep contado.</p>
       </div>
     </div>
     <div id="levelCards" class="level-grid"></div>
-    <p class="table-note">Cada tarjeta muestra la meta de retiro, la ganancia máxima por cuenta, cuántas minas necesitás, cuánta esencia y el Keep. Los niveles bajos usan menos esencia; los altos mueven más dólares por día.</p>
+    <p class="table-note">Cada tarjeta muestra la meta de retiro, la ganancia máxima por cuenta, cuántas minas necesitás, cuánta esencia y el Keep. Las metas bajas usan menos esencia; las altas mueven más dólares por día.</p>
     <details class="more" style="margin-top:16px">
       <summary>Ver tabla completa por cuenta</summary>
       <div class="table-wrap">
         <table class="data" id="staticTable">
-          <caption class="sr-only">Costo y ganancia estimada por nivel de Royal Mint</caption>
+          <caption class="sr-only">Costo y ganancia estimada por meta de Royal Mint</caption>
           <thead>
             <tr>
-              <th scope="col">Nivel</th>
+              <th scope="col">Mint</th>
               <th scope="col">Depósito</th>
               <th scope="col">Keep</th>
               <th scope="col">Plan de minas</th>
@@ -448,7 +448,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
     <div class="section-head">
       <div>
         <h2>Armá tu plan</h2>
-        <p class="sub">Movés las cuentas, el presupuesto y las entradas por día; todo se actualiza solo. Si no sabés qué nivel elegir, dejá “Auto”.</p>
+        <p class="sub">Movés las cuentas, el presupuesto y las entradas por día; todo se actualiza solo. Si no sabés qué meta elegir, dejá “Auto”.</p>
       </div>
       <div class="btn-row no-print" style="margin:0">
         <button class="btn ghost" type="button" id="resetBtn">Reiniciar</button>
@@ -477,7 +477,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
               <option value="roi">Máximo ROI</option>
               <option value="essence">Máxima ganancia por esencia</option>
             </select>
-            <span class="hint">“Auto” usa esto para elegir el nivel.</span>
+            <span class="hint">“Auto” usa esto para elegir la meta.</span>
           </div>
           <details class="more advanced" style="grid-column:1/-1;margin-top:2px">
             <summary>Ajustes finos (opcional)</summary>
@@ -520,13 +520,13 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
         <div id="resultStats" class="stats" aria-live="polite"></div>
         <div id="resultNote"></div>
         <details class="more" style="margin-top:16px">
-          <summary id="compareSummary">Comparar todos los niveles · 10 cuentas</summary>
+          <summary id="compareSummary">Comparar todas las metas · 10 cuentas</summary>
           <div class="table-wrap">
             <table class="data" id="compareTable">
-              <caption class="sr-only">Comparación de todos los niveles para la cantidad de cuentas elegida</caption>
+              <caption class="sr-only">Comparación de todas las metas para la cantidad de cuentas elegida</caption>
               <thead>
                 <tr>
-                  <th scope="col">Nivel</th>
+                  <th scope="col">Mint</th>
                   <th scope="col">Retiro/día / cuenta</th>
                   <th scope="col">Dinero total</th>
                   <th scope="col">Esencia total</th>
@@ -549,7 +549,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
     <div class="section-head">
       <div>
         <h2>Tu ganancia, día por día</h2>
-        <p class="sub">Mirá el nivel activo, cuánto recuperás y cómo se reparte el ingreso hasta el tope. El gráfico es la forma más rápida de verlo.</p>
+        <p class="sub">Mirá la meta activa, cuánto recuperás y cómo se reparte el ingreso hasta el tope. El gráfico es la forma más rápida de verlo.</p>
       </div>
       <div class="view-toggle no-print" role="group" aria-label="Ver por cuenta o total">
         <button type="button" id="viewAccount" class="active">Por cuenta</button>
@@ -599,7 +599,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
     <div class="section-head">
       <div>
         <h2>Qué comprar y en qué orden</h2>
-        <p class="sub">El camino del nivel activo: entrada → Keep → minas → Royal Mint → cobros. Los costos son por cuenta; el total para tus cuentas está en el resumen. Si querés producir antes, subí las minas que permita tu Keep actual y después seguí con el Keep.</p>
+        <p class="sub">El camino de la meta activa: entrada → Keep → minas → Royal Mint → cobros. Los costos son por cuenta; el total para tus cuentas está en el resumen. Si querés producir antes, subí las minas que permita tu Keep actual y después seguí con el Keep.</p>
       </div>
     </div>
     <div id="route"></div>
@@ -620,11 +620,11 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
       </div>
       <div class="risk">
         <div class="risk-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/><path d="M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></div>
-        <div><h3>Oro del Keep</h3><p>El Keep se paga con oro que podrías vender. A $0,08 por 1.000 oro, el Keep 7 cuesta ~$134 de oportunidad: por eso el N7 rinde menos que el N6 si contás ese oro.</p></div>
+        <div><h3>Oro del Keep</h3><p>El Keep se paga con oro que podrías vender. A $0,08 por 1.000 oro, el Keep 7 cuesta ~$134 de oportunidad: por eso Mint 7 rinde menos que Mint 6 si contás ese oro.</p></div>
       </div>
       <div class="risk">
         <div class="risk-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M7 3h10M7 21h10M7 3v4l5 5-5 5v4M17 3v4l-5 5 5 5v4"/></svg></div>
-        <div><h3>Esencia y tiempo</h3><p>La esencia se farmea. Cada cuenta necesita entre 2.300 y 1.379.300 según el nivel. Si no tenés ese tiempo, el nivel “ideal” no es realista.</p></div>
+        <div><h3>Esencia y tiempo</h3><p>La esencia se farmea. Cada cuenta necesita entre 2.300 y 1.379.300 según la meta. Si no tenés ese tiempo, la meta “ideal” no es realista.</p></div>
       </div>
       <div class="risk">
         <div class="risk-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 4l6 6-8 8-3-3 5-11Z"/><path d="M9 15l-4 4"/><path d="M4 20l-1-1"/></svg></div>
@@ -670,8 +670,8 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
       </ul>
     </details>
     <details>
-      <summary>¿Por qué N1 es el más eficiente en esencia y N6 el de mayor ganancia?</summary>
-      <p>Los niveles bajos de mina son mucho más baratos por oro/hora: N3 cuesta 1.150 esencia por 600 oro/h, mientras que N10 cuesta 185.550 por 2.800 oro/h. Por eso N1 necesita apenas 3.450 esencia para mover $3/día, y N6 necesita 927.750 para mover $25/día. Si la esencia es el recurso escaso, N1 rinde más por esencia; si el tiempo/entradas es el recurso escaso, N6 gana por clic. El N7 no conviene en términos reales porque el Keep 7 cuesta 1,68M de oro (~$134) y solo agrega $10/día de límite.</p>
+      <summary>¿Por qué Mint 1 es el más eficiente en esencia y Mint 6 el de mayor ganancia?</summary>
+      <p>Las minas de nivel bajo son mucho más baratas por oro/hora: una mina nivel 3 cuesta 1.150 esencia por 600 oro/h, mientras que una mina nivel 10 cuesta 185.550 por 2.800 oro/h. Por eso Mint 1 necesita apenas 3.450 esencia para mover $3/día, y Mint 6 necesita 927.750 para mover $25/día. Si la esencia es el recurso escaso, Mint 1 rinde más por esencia; si el tiempo/entradas es el recurso escaso, Mint 6 gana por clic. Mint 7 no conviene en términos reales porque el Keep 7 cuesta 1,68M de oro (~$134) y solo agrega $10/día de límite.</p>
     </details>
     <details>
       <summary>Fuentes y fecha</summary>
@@ -723,13 +723,13 @@ const KEEPS = {
 
 const MINTS = [
   {key:"none",name:"Sin Mint",price:0,total:0,limit:2,keep:2,levels:[3,3]},
-  {key:"n1",name:"N1",price:2,total:2,limit:3,keep:3,levels:[3,3,3]},
-  {key:"n2",name:"N2",price:5,total:7,limit:5,keep:3,levels:[5,5,4]},
-  {key:"n3",name:"N3",price:8,total:15,limit:8,keep:4,levels:[6,6,5,4]},
-  {key:"n4",name:"N4",price:12,total:27,limit:12,keep:4,levels:[8,7,7,7]},
-  {key:"n5",name:"N5",price:21,total:48,limit:18,keep:5,levels:[9,8,8,8,8]},
-  {key:"n6",name:"N6",price:28,total:76,limit:25,keep:5,levels:[10,10,10,10,10]},
-  {key:"n7",name:"N7",price:46,total:122,limit:35,keep:7,levels:[11,11,11,11,11,7]}
+  {key:"n1",name:"Mint 1",price:2,total:2,limit:3,keep:3,levels:[3,3,3]},
+  {key:"n2",name:"Mint 2",price:5,total:7,limit:5,keep:3,levels:[5,5,4]},
+  {key:"n3",name:"Mint 3",price:8,total:15,limit:8,keep:4,levels:[6,6,5,4]},
+  {key:"n4",name:"Mint 4",price:12,total:27,limit:12,keep:4,levels:[8,7,7,7]},
+  {key:"n5",name:"Mint 5",price:21,total:48,limit:18,keep:5,levels:[9,8,8,8,8]},
+  {key:"n6",name:"Mint 6",price:28,total:76,limit:25,keep:5,levels:[10,10,10,10,10]},
+  {key:"n7",name:"Mint 7",price:46,total:122,limit:35,keep:7,levels:[11,11,11,11,11,7]}
 ];
 
 const nf0 = new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
@@ -743,7 +743,7 @@ const pct = v => nf1.format(v) + "%";
 function comboText(levels){
   const counts = {};
   levels.forEach(l => counts[l] = (counts[l]||0)+1);
-  return Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).map(l => counts[l] + "×N" + l).join(" + ");
+  return Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).map(l => counts[l] + "×Mina nivel " + l).join(" + ");
 }
 
 function makePlan(mint){
@@ -897,9 +897,9 @@ function buildOrder(plan){
     cumEssence += cost;
     const cumRate = plan.levels.reduce((s,t) => s + MINES[Math.min(t,l)].rate, 0);
     const cumCap = plan.levels.reduce((s,t) => s + MINES[Math.min(t,l)].cap, 0);
-    steps.push({kind:"mine", level:l, count, inc, cost, cumEssence, cumRate, cumCap, keepReq:MINES[l].keepReq, label:"Minas a N" + l, detail:count + " mina" + (count > 1 ? "s" : "") + " × N" + l});
+    steps.push({kind:"mine", level:l, count, inc, cost, cumEssence, cumRate, cumCap, keepReq:MINES[l].keepReq, label:"Minas a nivel " + l, detail:count + " mina" + (count > 1 ? "s" : "") + " × nivel " + l});
   }
-  steps.push({kind:"mint", label:"Royal Mint " + plan.name, resource:"USD", cost:plan.total, limit:plan.limit, detail:plan.total ? "$" + int(plan.total) + " en tokens, instantáneo" : "Sin costo"});
+  steps.push({kind:"mint", label:(plan.name === "Sin Mint" ? "Royal Mint (sin Mint)" : "Royal Mint · nivel " + plan.name.replace("Mint ", "")), resource:"USD", cost:plan.total, limit:plan.limit, detail:plan.total ? "$" + int(plan.total) + " en tokens, instantáneo" : "Sin costo"});
   steps.push({kind:"sell", label:"Cobrar y vender", resource:"—", cost:0, detail:"Cobrá cada " + num1(plan.fillHours) + " h; el primer día el tope es $2"});
   return steps;
 }
@@ -977,7 +977,7 @@ function saveState(){
 
 function buildMintOptions(){
   const sel = $("#mintLevel");
-  sel.innerHTML = '<option value="auto">Auto · la mejor para tu objetivo</option>' + PLANS.map(p => '<option value="' + p.key + '">' + p.name + ' · ' + money(p.limit) + '/día' + (p.total ? ' (Mint ' + money(p.total) + ')' : '') + '</option>').join("");
+  sel.innerHTML = '<option value="auto">Auto · la mejor para tu objetivo</option>' + PLANS.map(p => '<option value="' + p.key + '">' + p.name + ' · ' + money(p.limit) + '/día</option>').join("");
 }
 
 function renderQuickCards(){
@@ -1026,8 +1026,8 @@ function renderStaticTable(activeKey){
     const ev = evaluatePlan(p, 1, {mintDeposited:true,countKeepGold:true});
     const badge = BADGES[p.key] ? '<span class="badge ' + BADGES[p.key].cls + '">' + BADGES[p.key].label + '</span>' : "";
     const cls = [p.key === activeKey ? "selected" : "", (p.key === "n7" || ev.maxProfit < 0) ? "row-warn" : ""].filter(Boolean).join(" ");
-    return '<tr data-level="' + p.key + '" class="' + cls + '" title="Click para probar este nivel">' +
-      '<td><strong>' + p.name + '</strong> ' + badge + '<br><small class="muted">' + (p.total ? "Mint " + money(p.total) : "Sin costo de Mint") + '</small></td>' +
+    return '<tr data-level="' + p.key + '" class="' + cls + '" title="Click para probar esta meta">' +
+      '<td><strong>' + p.name + '</strong> ' + badge + '<br><small class="muted">' + (p.total ? "Costo Mint " + money(p.total) : "Sin costo de Mint") + '</small></td>' +
       '<td class="num">' + money(ev.cashOutlay) + '</td>' +
       '<td class="num">K' + p.keep + '</td>' +
       '<td>' + p.combo + '</td>' +
@@ -1049,11 +1049,11 @@ function renderRecommendation(chosen, active, opts){
   if (state.level === "auto"){
     if (chosen.hasFeasible){
       title = "Recomendado: " + chosen.best.plan.name;
-      text = "Con " + state.n + " cuenta" + (state.n === 1 ? "" : "s") + " y objetivo “" + objectiveLabel(state.objective) + "”, este es el mejor nivel que cumple tus límites. Ganancia total estimada: " + money(chosen.best.totalProfit) + ". Esencia total: " + int(chosen.best.totalEssence) + ".";
+      text = "Con " + state.n + " cuenta" + (state.n === 1 ? "" : "s") + " y objetivo “" + objectiveLabel(state.objective) + "”, esta es la mejor meta que cumple tus límites. Ganancia total estimada: " + money(chosen.best.totalProfit) + ". Esencia total: " + int(chosen.best.totalEssence) + ".";
       cls = chosen.best.maxProfit >= 0 ? "ok" : "bad";
     }else{
-      title = "No hay nivel viable";
-      text = "Con esas restricciones no hay nivel que cumpla todo. Lo más cercano es " + chosen.best.plan.name + ": " + (chosen.best.issues.map(i => i.text).join(" · ") || "revisá los límites") + ".";
+      title = "No hay meta viable";
+      text = "Con esas restricciones no hay meta que cumpla todo. Lo más cercano es " + chosen.best.plan.name + ": " + (chosen.best.issues.map(i => i.text).join(" · ") || "revisá los límites") + ".";
       cls = "warn";
     }
   }else{
@@ -1066,7 +1066,7 @@ function renderRecommendation(chosen, active, opts){
       cls = active.maxProfit >= 0 ? "ok" : "bad";
     }
   }
-  if (active.maxProfit < 0){cls = "bad"; text += " La ganancia del nivel activo es negativa.";}
+  if (active.maxProfit < 0){cls = "bad"; text += " La ganancia de la meta activa es negativa.";}
   $("#recommendation").innerHTML = '<div class="rec ' + cls + '"><div class="kicker">Resultado del simulador</div><h3>' + title + '</h3><p>' + text + '</p></div>';
 }
 
@@ -1088,7 +1088,7 @@ function renderResultNote(active, opts){
   const notes = [];
   if (!state.mintDeposited) notes.push('<div class="note warn"><b>Mint con tokens ganados:</b> no cuenta para el tope 3×. El máximo retirable sigue siendo 3× la entrada de $1 ($3 brutos, $2,85 netos). El Mint solo acelera; no aumenta la ganancia total.</div>');
   if (!state.countKeepGold) notes.push('<div class="note warn">No estás contando el oro del Keep como costo. Si ese oro lo podrías vender, la ganancia real es menor.</div>');
-  if (active.maxProfit < 0) notes.push('<div class="note bad"><b>Ganancia negativa:</b> con estas opciones el nivel activo no recupera lo invertido. Probá otro nivel, bajá cuentas o revisá los toggles.</div>');
+  if (active.maxProfit < 0) notes.push('<div class="note bad"><b>Ganancia negativa:</b> con estas opciones la meta activa no recupera lo invertido. Probá otra meta, bajá cuentas o revisá los toggles.</div>');
   if (active.issues.length) notes.push('<div class="note bad"><b>No cumple tus límites:</b><ul>' + active.issues.map(i => '<li>' + i.text + '</li>').join("") + '</ul></div>');
   const eb = Number(state.essenceBudget) || 0, cb = Number(state.cashBudget) || 0, mc = Number(state.maxClaims) || 0;
   const fits = [];
@@ -1097,9 +1097,9 @@ function renderResultNote(active, opts){
   if (mc > 0) fits.push(Math.floor(mc / active.plan.claims));
   if (fits.length){
     const fit = Math.min(...fits);
-    if (fit < state.n) notes.push('<div class="note warn">Con tus límites, este nivel alcanza para <b>' + int(fit) + ' cuenta' + (fit === 1 ? '' : 's') + '</b>. Estás simulando ' + state.n + '.</div>');
+    if (fit < state.n) notes.push('<div class="note warn">Con tus límites, esta meta alcanza para <b>' + int(fit) + ' cuenta' + (fit === 1 ? '' : 's') + '</b>. Estás simulando ' + state.n + '.</div>');
   }
-  if (eb === 0 && active.plan.essence > 100000) notes.push('<div class="note warn">Este nivel necesita <b>' + int(active.totalEssence) + '</b> de esencia para ' + state.n + ' cuenta' + (state.n === 1 ? '' : 's') + '. Si no la tenés, abrí “Ajustes finos” y cargá tu presupuesto de esencia, o mirá N1/N2/N3.</div>');
+  if (eb === 0 && active.plan.essence > 100000) notes.push('<div class="note warn">Esta meta necesita <b>' + int(active.totalEssence) + '</b> de esencia para ' + state.n + ' cuenta' + (state.n === 1 ? '' : 's') + '. Si no la tenés, abrí “Ajustes finos” y cargá tu presupuesto de esencia, o mirá Mint 1, Mint 2 o Mint 3.</div>');
   $("#resultNote").innerHTML = notes.join("");
 }
 
@@ -1274,9 +1274,9 @@ function renderRoute(active){
   }
 
   html += '<h3 class="route-sub">Minas: esencia, de menor a mayor nivel</h3>';
-  html += '<details class="more" style="margin-top:10px"><summary>Ver detalle de minas (por cuenta)</summary><div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Paso</th><th>Nivel</th><th>Minas</th><th>Esencia/mina</th><th>Esencia total</th><th>Esencia acumulada</th><th>Producción acumulada</th><th>Capacidad acumulada</th><th>Keep mín.</th></tr></thead><tbody>';
+  html += '<details class="more" style="margin-top:10px"><summary>Ver detalle de minas (por cuenta)</summary><div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Paso</th><th>Mina</th><th>Cantidad</th><th>Esencia/mina</th><th>Esencia total</th><th>Esencia acumulada</th><th>Producción acumulada</th><th>Capacidad acumulada</th><th>Keep mín.</th></tr></thead><tbody>';
   mines.forEach(m => {
-    html += '<tr><td class="num">' + next() + '</td><td><strong>N' + m.level + '</strong></td><td class="num">' + m.count + '</td><td class="num">' + int(m.inc) + '</td><td class="num">' + int(m.cost) + '</td><td class="num">' + int(m.cumEssence) + '</td><td class="num">' + int(m.cumRate) + ' oro/h</td><td class="num">' + int(m.cumCap) + '</td><td class="num">K' + m.keepReq + '</td></tr>';
+    html += '<tr><td class="num">' + next() + '</td><td><strong>Mina ' + m.level + '</strong></td><td class="num">' + m.count + '</td><td class="num">' + int(m.inc) + '</td><td class="num">' + int(m.cost) + '</td><td class="num">' + int(m.cumEssence) + '</td><td class="num">' + int(m.cumRate) + ' oro/h</td><td class="num">' + int(m.cumCap) + '</td><td class="num">K' + m.keepReq + '</td></tr>';
   });
   html += '</tbody><tfoot><tr><td>Total</td><td>—</td><td class="num">' + p.levels.length + '</td><td class="num">—</td><td class="num">' + int(p.essence) + '</td><td class="num">' + int(p.essence) + '</td><td class="num">' + int(p.rate) + ' oro/h</td><td class="num">' + int(p.cap) + '</td><td class="num">—</td></tr></tfoot></table></div></details>';
 
@@ -1324,7 +1324,7 @@ function render(){
   renderRoute(active);
   const countLabel = state.n + " cuenta" + (state.n === 1 ? "" : "s");
   $("#viewTotal").textContent = "Total (" + countLabel + ")";
-  $("#compareSummary").textContent = "Comparar todos los niveles · " + countLabel;
+  $("#compareSummary").textContent = "Comparar todas las metas · " + countLabel;
   $("#chartViewLabel").textContent = state.view === "total" ? "Vista: " + countLabel + " (total)" : "Vista: por cuenta";
   $("#viewAccount").classList.toggle("active", state.view === "account");
   $("#viewTotal").classList.toggle("active", state.view === "total");
