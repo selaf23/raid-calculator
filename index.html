@@ -59,6 +59,7 @@ h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:700}
 .quick .kicker{font-size:.66rem}
 .quick-title{font-family:Georgia,"Times New Roman",serif;font-size:1.5rem;font-weight:700;color:var(--gold2);line-height:1.1}
 .quick-main{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green)}
+.quick-main-label{font-size:.66rem;color:var(--muted2);margin-top:-3px}
 .quick-sub{font-size:.82rem;color:var(--text)}
 .quick-foot{font-size:.75rem;color:var(--muted);margin-top:2px}
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--gold-soft);color:var(--gold2);border:1px solid rgba(224,180,92,.28);vertical-align:middle}
@@ -253,6 +254,7 @@ body{
 .mine-plan-foot{margin-top:8px;font-size:.74rem;color:var(--muted)}
 @media(max-width:700px){.mine-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .chart-box{background:var(--panel2);border-color:var(--border)}
+.chart-view-label{font-size:.76rem;font-weight:700;color:var(--muted);margin:6px 2px 0}
 .table-wrap{background:#fff;border-color:var(--border)}
 table.data{color:var(--text)}
 table.data th,table.data td{border-bottom-color:var(--border)}
@@ -414,7 +416,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
     <div id="levelCards" class="level-grid"></div>
     <p class="table-note">Cada tarjeta muestra la meta de retiro, la ganancia máxima por cuenta, cuántas minas necesitás, cuánta esencia y el Keep. Los niveles bajos usan menos esencia; los altos mueven más dólares por día.</p>
     <details class="more" style="margin-top:16px">
-      <summary>Ver tabla completa con todos los números</summary>
+      <summary>Ver tabla completa por cuenta</summary>
       <div class="table-wrap">
         <table class="data" id="staticTable">
           <caption class="sr-only">Costo y ganancia estimada por nivel de Royal Mint</caption>
@@ -438,7 +440,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
           <tbody id="staticTableBody"></tbody>
         </table>
       </div>
-      <p class="table-note">Depósito = $1 de entrada + precio del Mint. Ganancia máx. = 3× depósito × 0,95 − depósito − oro del Keep. “Retiro/día” es el límite bruto del Mint y “Neto/día” es lo que te queda después de la comisión del 5%. El neto es el del primer día completo con el límite del Mint; en los días siguientes el límite se reduce al superar lo depositado. La tabla no incluye el tiempo de farmear esencia ni el valor de tu tiempo. “Días al tope” es el día en que se llega a 3× lo depositado; después el juego pausa las ventas hasta que deposites más.</p>
+      <p class="table-note">Todos los valores de esta tabla son por cuenta. Depósito = $1 de entrada + precio del Mint. Ganancia máx. = 3× depósito × 0,95 − depósito − oro del Keep. “Retiro/día” es el límite bruto del Mint y “Neto/día” es lo que te queda después de la comisión del 5%. El neto es el del primer día completo con el límite del Mint; en los días siguientes el límite se reduce al superar lo depositado. La tabla no incluye el tiempo de farmear esencia ni el valor de tu tiempo. “Días al tope” es el día en que se llega a 3× lo depositado; después el juego pausa las ventas hasta que deposites más.</p>
     </details>
   </section>
 
@@ -518,19 +520,19 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
         <div id="resultStats" class="stats" aria-live="polite"></div>
         <div id="resultNote"></div>
         <details class="more" style="margin-top:16px">
-          <summary>Comparar todos los niveles</summary>
+          <summary id="compareSummary">Comparar todos los niveles · 10 cuentas</summary>
           <div class="table-wrap">
             <table class="data" id="compareTable">
               <caption class="sr-only">Comparación de todos los niveles para la cantidad de cuentas elegida</caption>
               <thead>
                 <tr>
                   <th scope="col">Nivel</th>
-                  <th scope="col">Retiro/día</th>
+                  <th scope="col">Retiro/día / cuenta</th>
                   <th scope="col">Dinero total</th>
                   <th scope="col">Esencia total</th>
                   <th scope="col">Ganancia total</th>
-                  <th scope="col">Reclamos/día</th>
-                  <th scope="col">ROI</th>
+                  <th scope="col">Reclamos/día total</th>
+                  <th scope="col">ROI / cuenta</th>
                   <th scope="col">Estado</th>
                 </tr>
               </thead>
@@ -551,7 +553,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
       </div>
       <div class="view-toggle no-print" role="group" aria-label="Ver por cuenta o total">
         <button type="button" id="viewAccount" class="active">Por cuenta</button>
-        <button type="button" id="viewTotal">Total (N)</button>
+        <button type="button" id="viewTotal">Total (10 cuentas)</button>
       </div>
     </div>
     <div class="account-grid">
@@ -559,6 +561,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
       <div>
         <div class="chart-box">
           <div id="chart" role="img" aria-label="Gráfico de ganancia acumulada"></div>
+          <div id="chartViewLabel" class="chart-view-label">Vista: por cuenta</div>
           <div class="legend">
             <span><i class="dot" style="background:var(--gold)"></i> Acumulado</span>
             <span><i class="dot" style="background:var(--blue)"></i> Dinero puesto</span>
@@ -586,7 +589,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
               <tfoot id="dailyFoot"></tfoot>
             </table>
           </div>
-          <p class="table-note">El primer día el tope es $2 para todas las cuentas. Después se aplica el límite del Mint y se reduce al superar lo depositado. La columna “Límite/cuenta” es por cuenta; las demás se multiplican por N en la vista total.</p>
+          <p class="table-note">El primer día el tope es $2 para todas las cuentas. Después se aplica el límite del Mint y se reduce al superar lo depositado. La columna “Límite/cuenta” es por cuenta; las demás se multiplican por la cantidad de cuentas en la vista total.</p>
         </details>
       </div>
     </div>
@@ -596,7 +599,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
     <div class="section-head">
       <div>
         <h2>Qué comprar y en qué orden</h2>
-        <p class="sub">El camino del nivel activo: entrada → Keep → minas → Royal Mint → cobros. Los costos son por cuenta; el total para N está en el resumen. Si querés producir antes, subí las minas que permita tu Keep actual y después seguí con el Keep.</p>
+        <p class="sub">El camino del nivel activo: entrada → Keep → minas → Royal Mint → cobros. Los costos son por cuenta; el total para tus cuentas está en el resumen. Si querés producir antes, subí las minas que permita tu Keep actual y después seguí con el Keep.</p>
       </div>
     </div>
     <div id="route"></div>
@@ -986,6 +989,7 @@ function renderQuickCards(){
       '<span class="kicker">' + q.kicker + '</span>' +
       '<span class="quick-title">' + p.name + '</span>' +
       '<span class="quick-main">' + money(ev.maxProfit) + '</span>' +
+      '<span class="quick-main-label">ganancia máxima por cuenta</span>' +
       '<span class="quick-sub">Retiro ' + money(p.limit) + '/día · ' + int(p.essence) + ' esencia · ' + p.claims + ' reclamo' + (p.claims > 1 ? 's' : '') + '/día</span>' +
       '<span class="quick-foot">' + q.foot + '</span>' +
     '</button>';
@@ -1072,9 +1076,9 @@ function renderResultStats(active){
     ["Oro del Keep (total)", int(active.totalKeepGold), ""],
     ["Oro del Keep en $", money(active.totalKeepGoldUsd), active.countKeepGold ? "" : "muted"],
     ["Ganancia total", money(active.totalProfit), active.totalProfit >= 0 ? "good" : "bad"],
-    ["ROI", pct(active.roi), active.roi >= 0 ? "good" : "bad"],
-    ["Días al tope", active.sim.capDay, ""],
-    ["Ganancia por clic", money(active.profitPerClick), ""],
+    ["ROI / cuenta", pct(active.roi), active.roi >= 0 ? "good" : "bad"],
+    ["Días al tope / cuenta", active.sim.capDay, ""],
+    ["Ganancia por clic / cuenta", money(active.profitPerClick), ""],
     ["Neto/día (total)", money(active.totalNetDay), "gold"]
   ];
   $("#resultStats").innerHTML = stats.map(s => '<div class="stat"><small>' + s[0] + '</small><b class="' + s[2] + '">' + s[1] + '</b></div>').join("");
@@ -1166,7 +1170,7 @@ function renderAccount(active){
   const tokenLine = active.mintDeposited ? "Mint pagado con tokens depositados" : "Mint pagado con tokens ganados (no cuenta para el tope 3×)";
   const farm = Number(state.essencePerHour) > 0 ? ' · farmeo: ~' + num1(p.essence / Number(state.essencePerHour) / 24) + ' días por cuenta' : '';
   const html = '<div class="account-card">' +
-    '<div class="kicker">Meta activa</div>' +
+    '<div class="kicker">Meta activa · por cuenta</div>' +
     '<h3>' + p.name + ' ' + badge + '</h3>' +
     '<p class="plan-line">Retiro ' + money(p.limit) + '/día · neto ' + money(p.netDay) + ' · Keep K' + p.keep + ' · ' + p.combo + ' (' + p.levels.length + ' mina' + (p.levels.length > 1 ? 's' : '') + ') · ' + p.claims + ' reclamo' + (p.claims > 1 ? 's' : '') + '/día · llenado cada ' + num1(p.fillHours) + ' h' + farm + '</p>' +
     '<div class="stats">' +
@@ -1259,7 +1263,7 @@ function renderRoute(active){
   html += '<h3 class="route-sub">Keep: oro que necesitás</h3>';
   if (keeps.length){
     let cumMin = 0;
-    html += '<details class="more" style="margin-top:10px"><summary>Ver detalle del Keep (oro)</summary><div class="table-wrap"><table class="data" style="min-width:640px"><thead><tr><th>Paso</th><th>Keep</th><th>Oro</th><th>Tiempo</th><th>Acumulado</th><th>Equivale a</th><th>≈ h de producción final</th></tr></thead><tbody>';
+    html += '<details class="more" style="margin-top:10px"><summary>Ver detalle del Keep (por cuenta)</summary><div class="table-wrap"><table class="data" style="min-width:640px"><thead><tr><th>Paso</th><th>Keep</th><th>Oro</th><th>Tiempo</th><th>Acumulado</th><th>Equivale a</th><th>≈ h de producción final</th></tr></thead><tbody>';
     keeps.forEach(k => {
       cumMin += k.minutes;
       html += '<tr><td class="num">' + next() + '</td><td><strong>K' + k.level + '</strong></td><td class="num">' + int(k.cost) + '</td><td class="num">' + k.time + '</td><td class="num">' + int(k.cumGold) + '</td><td class="num">' + money(k.cumGold * GOLD_USD) + '</td><td class="num">' + num1(k.cumGold / p.rate) + ' h</td></tr>';
@@ -1270,7 +1274,7 @@ function renderRoute(active){
   }
 
   html += '<h3 class="route-sub">Minas: esencia, de menor a mayor nivel</h3>';
-  html += '<details class="more" style="margin-top:10px"><summary>Ver detalle de minas (esencia)</summary><div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Paso</th><th>Nivel</th><th>Minas</th><th>Esencia/mina</th><th>Esencia total</th><th>Esencia acumulada</th><th>Producción acumulada</th><th>Capacidad acumulada</th><th>Keep mín.</th></tr></thead><tbody>';
+  html += '<details class="more" style="margin-top:10px"><summary>Ver detalle de minas (por cuenta)</summary><div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Paso</th><th>Nivel</th><th>Minas</th><th>Esencia/mina</th><th>Esencia total</th><th>Esencia acumulada</th><th>Producción acumulada</th><th>Capacidad acumulada</th><th>Keep mín.</th></tr></thead><tbody>';
   mines.forEach(m => {
     html += '<tr><td class="num">' + next() + '</td><td><strong>N' + m.level + '</strong></td><td class="num">' + m.count + '</td><td class="num">' + int(m.inc) + '</td><td class="num">' + int(m.cost) + '</td><td class="num">' + int(m.cumEssence) + '</td><td class="num">' + int(m.cumRate) + ' oro/h</td><td class="num">' + int(m.cumCap) + '</td><td class="num">K' + m.keepReq + '</td></tr>';
   });
@@ -1300,11 +1304,11 @@ function renderRoute(active){
     '<div class="stat"><small>Producción total</small><b>' + int(active.totalProduction / 23) + ' oro/h</b></div>' +
     '<div class="stat"><small>Ganancia máx. total</small><b class="' + (active.totalProfit >= 0 ? 'good' : 'bad') + '">' + money(active.totalProfit) + '</b></div>';
 
-  $("#routeTotals").innerHTML = '<div class="route-total"><h3>Tu resumen</h3>' +
+  $("#routeTotals").innerHTML = '<div class="route-total"><h3>Tu resumen · ' + n + ' cuenta' + (n === 1 ? '' : 's') + '</h3>' +
     '<div class="stats">' + perAccount + totals + '</div>' +
     '<p class="small" style="margin:12px 0 0;color:var(--muted)">Tiempo de Keep: <b>' + formatMinutes(keepMinutes) + '</b>. ' +
     (farmHours !== null ? 'Fondeo de esencia: <b>~' + num1(farmHours) + ' h</b> por cuenta (~' + num1(farmHours / 24) + ' días) con ' + int(farmRate) + ' esencia/h. ' : '') +
-    'El oro del Keep es oro que dejás de vender; no es dinero que ponés de tu bolsillo. La esencia se farmea; no se compra en este modelo. Para N cuentas, multiplicá la esencia, el oro y los reclamos por N.</p></div>';
+    'El oro del Keep es oro que dejás de vender; no es dinero que ponés de tu bolsillo. La esencia se farmea; no se compra en este modelo. Los costos de arriba son por cuenta; el resumen ya incluye los totales para las cuentas configuradas.</p></div>';
 }
 
 function render(){
@@ -1318,6 +1322,10 @@ function render(){
   renderChart(active);
   renderDailyTable(active);
   renderRoute(active);
+  const countLabel = state.n + " cuenta" + (state.n === 1 ? "" : "s");
+  $("#viewTotal").textContent = "Total (" + countLabel + ")";
+  $("#compareSummary").textContent = "Comparar todos los niveles · " + countLabel;
+  $("#chartViewLabel").textContent = state.view === "total" ? "Vista: " + countLabel + " (total)" : "Vista: por cuenta";
   $("#viewAccount").classList.toggle("active", state.view === "account");
   $("#viewTotal").classList.toggle("active", state.view === "total");
 }
