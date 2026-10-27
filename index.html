@@ -327,6 +327,153 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
   details.more .table-note{padding:10px}
 }
 </style>
+<style id="black-theme">
+:root{
+  --bg:#050507; --bg2:#08090d; --panel:#0e1015; --panel2:#12151c; --panel3:#0a0c11;
+  --border:#232733; --border2:#323848; --text:#f5f2ea; --muted:#a8a49b; --muted2:#7e7a72;
+  --gold:#e0b45c; --gold2:#f6d98d; --gold-soft:rgba(224,180,92,.13);
+  --green:#57d68b; --green-soft:rgba(87,214,139,.12);
+  --red:#ff6b6b; --red-soft:rgba(255,107,107,.10);
+  --blue:#7c9cff; --shadow:0 20px 60px rgba(0,0,0,.55); --radius:20px;
+}
+html{background:var(--bg)}
+body{
+  background:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),
+    radial-gradient(1100px 650px at 10% -12%,rgba(224,180,92,.20),transparent 55%),
+    radial-gradient(900px 600px at 92% 0%,rgba(124,92,255,.15),transparent 55%),
+    radial-gradient(900px 700px at 50% 110%,rgba(87,214,139,.10),transparent 60%),
+    linear-gradient(180deg,#07080b,#040405 60%,#060608);
+  background-size:64px 64px,64px 64px,auto,auto,auto,auto;
+  background-color:var(--bg);color:var(--text);
+}
+::selection{background:rgba(224,180,92,.35);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#07080b}
+::-webkit-scrollbar-thumb{background:#2a2f3a;border-radius:999px;border:2px solid #07080b}
+::-webkit-scrollbar-thumb:hover{background:#3a4150}
+.topbar{background:rgba(5,6,9,.82);border-bottom-color:rgba(224,180,92,.16);box-shadow:0 1px 0 rgba(224,180,92,.06)}
+.brand{color:var(--text)}
+.nav a{color:var(--muted)}
+.nav a:hover{color:var(--text);background:var(--panel2)}
+.hero h1{background:linear-gradient(180deg,#fff 0%,#f6d98d 55%,#c98a2e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted)}
+.hero-art{background:linear-gradient(180deg,#1b160d,#0b0d12);border-color:rgba(224,180,92,.25);box-shadow:0 0 60px rgba(224,180,92,.12),var(--shadow)}
+.panel{background:linear-gradient(180deg,#10131a,#0b0d12);border-color:var(--border);box-shadow:var(--shadow)}
+.quick{background:#0f1116;border-color:var(--border);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.quick.gold{background:linear-gradient(180deg,rgba(224,180,92,.13),rgba(15,17,22,.96) 55%)}
+.quick.green{background:linear-gradient(180deg,rgba(87,214,139,.10),rgba(15,17,22,.96) 55%)}
+.quick.blue{background:linear-gradient(180deg,rgba(124,156,255,.12),rgba(15,17,22,.96) 55%)}
+.quick.cream{background:linear-gradient(180deg,rgba(246,217,141,.08),rgba(15,17,22,.96) 55%)}
+.quick:hover{border-color:rgba(224,180,92,.55);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 0 1px rgba(224,180,92,.12)}
+.quick-icon{background:rgba(224,180,92,.16)}
+.quick.green .quick-icon{background:rgba(87,214,139,.14)}
+.quick.blue .quick-icon{background:rgba(124,156,255,.15)}
+.quick.cream .quick-icon{background:rgba(246,217,141,.10)}
+.quick-sub{color:var(--text)}
+.quick-foot{color:var(--muted)}
+.rec{background:linear-gradient(180deg,#11141b,#0b0d12);border-color:var(--border)}
+.rec.ok{background:linear-gradient(180deg,rgba(87,214,139,.12),rgba(11,13,18,.96) 60%);border-color:rgba(87,214,139,.35)}
+.rec.warn{background:linear-gradient(180deg,rgba(224,180,92,.12),rgba(11,13,18,.96) 60%);border-color:rgba(224,180,92,.4)}
+.rec.bad{background:linear-gradient(180deg,rgba(255,107,107,.12),rgba(11,13,18,.96) 60%);border-color:rgba(255,107,107,.4)}
+.rec h3{color:var(--gold2)}
+.rec p{color:var(--muted)}
+.stat{background:#0f1218;border-color:var(--border)}
+.stat small{color:var(--muted2)}
+.stat b{color:var(--text)}
+.account-card{background:linear-gradient(180deg,#11141b,#0b0d12);border-color:var(--border);box-shadow:var(--shadow)}
+.account-card h3{color:var(--gold2)}
+.account-card .plan-line,.account-card .line{color:var(--muted)}
+.account-card .line b{color:var(--text)}
+.chart-box{background:#0c0f14;border-color:var(--border)}
+.chart-view-label{color:var(--muted)}
+.table-wrap{background:#0b0d12;border-color:var(--border)}
+table.data{color:var(--text)}
+table.data th,table.data td{border-bottom-color:var(--border)}
+table.data thead th{background:#0a0c10;color:var(--muted)}
+table.data tbody tr:hover{background:#12151c}
+table.data tbody tr.selected{background:rgba(224,180,92,.10);box-shadow:inset 0 0 0 1px rgba(224,180,92,.3)}
+table.data tbody tr.row-warn{background:rgba(255,107,107,.05)}
+table.data tfoot td{background:#0a0c10;border-top-color:var(--border2)}
+.field label{color:var(--muted)}
+.field input,.field select{background:#0b0d12;border-color:var(--border2);color:var(--text)}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,180,92,.16)}
+.field select option{background:#0b0d12;color:var(--text)}
+.field .hint{color:var(--muted2)}
+.check{color:var(--muted)}
+.check b{color:var(--text)}
+.btn{background:linear-gradient(180deg,#f6d98d,#d8a23f);color:#1a1205;box-shadow:0 8px 24px rgba(224,180,92,.18)}
+.btn.ghost{background:transparent;border-color:var(--border2);color:var(--text)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold2)}
+.note{background:#0f1218;border-color:var(--border);color:var(--muted)}
+.note.warn{background:rgba(224,180,92,.08);border-color:rgba(224,180,92,.3)}
+.note.bad{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.3)}
+details{background:#0f1218;border-color:var(--border)}
+details summary{color:var(--gold2)}
+details code{background:#0b0d12;border-color:var(--border);color:var(--text)}
+details.more{background:#0b0d12;border-color:var(--border)}
+details.more summary{background:#0f1218;color:var(--gold2)}
+details.more summary:hover{background:rgba(224,180,92,.08)}
+.route-step{background:#0f1218;border-color:var(--border)}
+.route-num{background:linear-gradient(180deg,#f6d98d,#d8a23f);color:#1a1205;box-shadow:0 0 18px rgba(224,180,92,.22)}
+.route-sub{color:var(--gold2)}
+.route-total{background:linear-gradient(180deg,rgba(224,180,92,.10),rgba(15,17,22,.96));border-color:rgba(224,180,92,.3)}
+.risk{background:#0f1218;border-color:var(--border);box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.risk h3{color:var(--text)}
+.risk p{color:var(--muted)}
+.risk-icon{background:rgba(224,180,92,.14)}
+.risk-icon.green{background:rgba(87,214,139,.14)}
+.risk-icon.blue{background:rgba(124,156,255,.14)}
+.risk-icon.red{background:rgba(255,107,107,.12)}
+.view-toggle{background:var(--panel2);border-color:var(--border)}
+.view-toggle button.active{background:linear-gradient(180deg,#f6d98d,#d8a23f);color:#1a1205}
+.table-note{color:var(--muted2)}
+.section .sub{color:var(--muted)}
+footer{color:var(--muted);border-top-color:var(--border)}
+footer a{color:var(--gold2)}
+.tip{background:linear-gradient(180deg,rgba(60,100,255,.12),rgba(15,18,26,.92));border-color:rgba(124,156,255,.30);color:#cdd8ff}
+.tip svg{color:#8fb0ff}
+.tip strong{color:#eef2ff}
+.tip p{color:#aebbe0}
+.level-card{background:#0f1116;border-color:var(--border);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.level-card.tone-gold{background:linear-gradient(180deg,rgba(224,180,92,.13),rgba(15,17,22,.96) 55%)}
+.level-card.tone-green{background:linear-gradient(180deg,rgba(87,214,139,.10),rgba(15,17,22,.96) 55%)}
+.level-card.tone-blue{background:linear-gradient(180deg,rgba(124,156,255,.12),rgba(15,17,22,.96) 55%)}
+.level-card.tone-red{background:linear-gradient(180deg,rgba(255,107,107,.10),rgba(15,17,22,.96) 55%)}
+.level-card:hover{border-color:rgba(224,180,92,.55);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.level-card.selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,180,92,.15),0 0 30px rgba(224,180,92,.10)}
+.level-name{color:var(--gold2)}
+.level-goal{color:var(--gold2)}
+.level-profit{color:var(--green)}
+.level-sub{color:var(--muted)}
+.level-stats{color:var(--muted)}
+.level-stats b{color:var(--text)}
+.level-time{color:var(--muted2)}
+.level-cta{color:var(--gold2)}
+.mine-plan{background:linear-gradient(180deg,rgba(224,180,92,.10),rgba(11,13,18,.96));border-color:rgba(224,180,92,.30)}
+.mine-plan h3{color:var(--gold2)}
+.mine-plan p{color:var(--muted)}
+.mine-plan-grid > div{background:#0f1218;border-color:var(--border)}
+.mine-plan-grid small{color:var(--muted2)}
+.mine-plan-grid b{color:var(--text)}
+.mine-progress{background:#1a1d24}
+.mine-progress span{background:linear-gradient(90deg,#e0b45c,#57d68b)}
+.mine-plan-foot{color:var(--muted)}
+@media(max-width:700px){
+  table.data th:first-child,table.data td:first-child{background:#0b0d12}
+  table.data thead th:first-child{background:#0a0c10}
+  table.data tbody tr.selected td:first-child{background:#2a2416}
+}
+@media print{
+  h1,h2,h3,p,li,td,th,summary,.stat b,.stat small,.account-card,.account-card .line,.account-card .plan-line,.route-step p,.route-total,.section .sub,.muted,.table-note,.kicker,.level-sub,.level-stats,.level-time,.level-name,.level-goal,.level-profit,.level-cta,.mine-plan h3,.mine-plan p,.mine-plan-goal,.mine-plan-grid b,.mine-plan-grid small,.mine-plan-foot,.chart-view-label{color:#000!important}
+  .mine-plan,.mine-plan-grid > div,.level-card,details,details.more,details.more summary{background:#fff!important;border-color:#ccc!important}
+  .mine-progress{background:#eee!important}
+  .mine-progress span{background:#999!important}
+  .hero h1{background:none!important;color:#000!important;-webkit-text-fill-color:#000!important}
+  .level-card{box-shadow:none!important}
+}
+</style>
 </head>
 <body id="top">
 <header class="topbar no-print">
@@ -364,16 +511,16 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
         <svg viewBox="0 0 320 260" role="presentation" focusable="false">
           <defs>
             <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#fff8ea"/>
-              <stop offset="1" stop-color="#fdf3e1"/>
+              <stop offset="0" stop-color="#241c0f"/>
+              <stop offset="1" stop-color="#0b0d12"/>
             </linearGradient>
           </defs>
-          <circle cx="160" cy="130" r="108" fill="url(#sky)"/>
-          <ellipse cx="160" cy="218" rx="112" ry="18" fill="#efe3cf"/>
-          <rect x="88" y="138" width="144" height="72" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
-          <rect x="78" y="112" width="40" height="98" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
-          <rect x="202" y="112" width="40" height="98" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
-          <rect x="132" y="92" width="56" height="118" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
+          <circle cx="160" cy="130" r="108" fill="url(#sky)" stroke="rgba(224,180,92,.28)" stroke-width="1.5"/>
+          <ellipse cx="160" cy="218" rx="112" ry="18" fill="#1a150c"/>
+          <rect x="88" y="138" width="144" height="72" rx="8" fill="#f5f2ea" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="78" y="112" width="40" height="98" rx="8" fill="#f5f2ea" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="202" y="112" width="40" height="98" rx="8" fill="#f5f2ea" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="132" y="92" width="56" height="118" rx="8" fill="#f5f2ea" stroke="#c98a2e" stroke-width="3"/>
           <path d="M78 112 h10 v-10 h10 v10 h10 v-10 h10 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
           <path d="M202 112 h10 v-10 h10 v10 h10 v-10 h10 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
           <path d="M132 92 h10 v-10 h10 v10 h10 v-10 h16 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
@@ -381,7 +528,7 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
           <path d="M198 112 L222 78 L246 112 Z" fill="#e0a84a"/>
           <path d="M128 92 L160 54 L192 92 Z" fill="#e0a84a"/>
           <path d="M160 54 V34" stroke="#7a6a4f" stroke-width="3" stroke-linecap="round"/>
-          <path d="M160 34 h22 l-6 7 6 7 h-22 Z" fill="#2f9e6b"/>
+          <path d="M160 34 h22 l-6 7 6 7 h-22 Z" fill="#57d68b"/>
           <path d="M146 210 V172 a14 14 0 0 1 28 0 V210 Z" fill="#c98a2e" opacity=".85"/>
           <circle cx="168" cy="188" r="2.5" fill="#fff8ea"/>
           <rect x="94" y="134" width="10" height="16" rx="5" fill="#c98a2e" opacity=".55"/>
@@ -393,13 +540,13 @@ details.more .table-note{padding:10px 18px 16px;margin:0}
           <text x="252" y="199" text-anchor="middle" font-size="14" font-weight="700" fill="#7a5414" font-family="Segoe UI, sans-serif">$</text>
           <circle cx="226" cy="212" r="14" fill="#f0c96a" stroke="#c98a2e" stroke-width="3"/>
           <circle cx="226" cy="212" r="7" fill="none" stroke="#fff8ea" stroke-width="2"/>
-          <rect x="52" y="188" width="106" height="52" rx="12" fill="#fff" stroke="#e8e0d2"/>
-          <path d="M64 226 L82 214 L96 220 L112 202 L128 208 L144 196" fill="none" stroke="#2f9e6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="144" cy="196" r="4" fill="#2f9e6b"/>
-          <path d="M64 236 H144" stroke="#efe3cf" stroke-width="2" stroke-linecap="round"/>
+          <rect x="52" y="188" width="106" height="52" rx="12" fill="#0b0d12" stroke="#2a2416"/>
+          <path d="M64 226 L82 214 L96 220 L112 202 L128 208 L144 196" fill="none" stroke="#57d68b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="144" cy="196" r="4" fill="#57d68b"/>
+          <path d="M64 236 H144" stroke="#2a2416" stroke-width="2" stroke-linecap="round"/>
           <path d="M62 104 l4 8 8 4 -8 4 -4 8 -4 -8 -8 -4 8 -4 Z" fill="#e0a84a" opacity=".7"/>
-          <circle cx="264" cy="92" r="4" fill="#57d68d" opacity=".7"/>
-          <circle cx="72" cy="160" r="3" fill="#4f7cff" opacity=".5"/>
+          <circle cx="264" cy="92" r="4" fill="#57d68b" opacity=".7"/>
+          <circle cx="72" cy="160" r="3" fill="#7c9cff" opacity=".5"/>
         </svg>
       </div>
     </div>
@@ -1203,25 +1350,25 @@ function renderChart(active){
   let grid = '';
   for (let i = 0; i <= 4; i++){
     const v = maxY * i / 4, yy = y(v);
-    grid += '<line x1="' + pad.l + '" y1="' + yy.toFixed(1) + '" x2="' + (W-pad.r) + '" y2="' + yy.toFixed(1) + '" stroke="rgba(36,38,43,.08)" stroke-width="1"/>';
-    grid += '<text x="' + (pad.l-10) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end" fill="#938b7e" font-size="10">' + money(v) + '</text>';
+    grid += '<line x1="' + pad.l + '" y1="' + yy.toFixed(1) + '" x2="' + (W-pad.r) + '" y2="' + yy.toFixed(1) + '" stroke="rgba(245,242,234,.08)" stroke-width="1"/>';
+    grid += '<text x="' + (pad.l-10) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end" fill="#a8a49b" font-size="10">' + money(v) + '</text>';
   }
   const xLabels = [];
   const idxs = rows.length <= 5 ? rows.map((_,i)=>i) : [0, Math.floor((rows.length-1)/2), rows.length-1];
-  idxs.forEach(i => { xLabels.push('<text x="' + x(i).toFixed(1) + '" y="' + (H-14) + '" text-anchor="middle" fill="#938b7e" font-size="10">Día ' + rows[i].day + '</text>'); });
-  const points = rows.map((r,i) => '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(r.cumNet*mult).toFixed(1) + '" r="3" fill="#e0a84a"><title>Día ' + r.day + ' · Neto ' + money(r.cumNet*mult) + ' · Ganancia ' + money(r.cumNet*mult - (state.view === "total" ? active.totalInvestment : active.investmentValue)) + '</title></circle>').join('');
+  idxs.forEach(i => { xLabels.push('<text x="' + x(i).toFixed(1) + '" y="' + (H-14) + '" text-anchor="middle" fill="#a8a49b" font-size="10">Día ' + rows[i].day + '</text>'); });
+  const points = rows.map((r,i) => '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(r.cumNet*mult).toFixed(1) + '" r="3" fill="#f6d98d"><title>Día ' + r.day + ' · Neto ' + money(r.cumNet*mult) + ' · Ganancia ' + money(r.cumNet*mult - (state.view === "total" ? active.totalInvestment : active.investmentValue)) + '</title></circle>').join('');
   const cashLine = active.cashOutlay * mult, totalLine = active.investmentValue * mult;
   const dash = (v,color,label) => v > 0 && v <= maxY ? '<line x1="' + pad.l + '" y1="' + y(v).toFixed(1) + '" x2="' + (W-pad.r) + '" y2="' + y(v).toFixed(1) + '" stroke="' + color + '" stroke-width="1.3" stroke-dasharray="5 4"/><text x="' + (W-pad.r) + '" y="' + (y(v)-5).toFixed(1) + '" text-anchor="end" fill="' + color + '" font-size="10">' + label + '</text>' : '';
   const svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-label="Ganancia acumulada por día"><desc>La línea dorada muestra la ganancia neta acumulada. Las líneas punteadas marcan el dinero puesto, el costo total y el tope 3x.</desc>' +
     grid +
-    '<path d="' + areaPath + '" fill="rgba(201,138,46,.14)"/>' +
-    '<path d="' + linePath + '" fill="none" stroke="#c98a2e" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>' +
-    dash(cashLine, '#4f7cff', 'Dinero') +
-    dash(totalLine, '#938b7e', 'Costo total') +
-    dash(maxY, '#2f9e6b', 'Tope 3×') +
+    '<path d="' + areaPath + '" fill="rgba(224,180,92,.18)"/>' +
+    '<path d="' + linePath + '" fill="none" stroke="#e0b45c" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>' +
+    dash(cashLine, '#7c9cff', 'Dinero') +
+    dash(totalLine, '#a8a49b', 'Costo total') +
+    dash(maxY, '#57d68b', 'Tope 3×') +
     points + xLabels +
-    '<line x1="' + pad.l + '" y1="' + pad.t + '" x2="' + pad.l + '" y2="' + (H-pad.b) + '" stroke="rgba(36,38,43,.18)"/>' +
-    '<line x1="' + pad.l + '" y1="' + (H-pad.b) + '" x2="' + (W-pad.r) + '" y2="' + (H-pad.b) + '" stroke="rgba(36,38,43,.18)"/>' +
+    '<line x1="' + pad.l + '" y1="' + pad.t + '" x2="' + pad.l + '" y2="' + (H-pad.b) + '" stroke="rgba(245,242,234,.18)"/>' +
+    '<line x1="' + pad.l + '" y1="' + (H-pad.b) + '" x2="' + (W-pad.r) + '" y2="' + (H-pad.b) + '" stroke="rgba(245,242,234,.18)"/>' +
   '</svg>';
   $("#chart").innerHTML = svg;
 }
