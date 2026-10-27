@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RaidLords · Tu plan de cuentas</title>
+<meta name="description" content="Calculadora de costo, beneficio y orden de compra para cuentas de RaidLords: niveles de Mint, minas, esencia, ganancia estimada y riesgos.">
+<style>
+:root{
+  --bg:#0a0d13; --bg2:#0b1018; --panel:#141b27; --panel2:#1a2333; --panel3:#111827;
+  --border:#273349; --border2:#33425e; --text:#e9eef8; --muted:#9aa7bd; --muted2:#728097;
+  --gold:#e0b45c; --gold2:#f6d98d; --gold-soft:rgba(224,180,92,.12);
+  --green:#57d68d; --green-soft:rgba(87,214,141,.12);
+  --red:#ff6b6b; --red-soft:rgba(255,107,107,.12);
+  --blue:#6aa9ff; --shadow:0 18px 50px rgba(0,0,0,.38); --radius:16px;
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html{background:var(--bg)}
+body{
+  margin:0;color:var(--text);line-height:1.5;min-height:100vh;
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:
+    radial-gradient(1000px 600px at 12% -10%,rgba(224,180,92,.10),transparent 60%),
+    radial-gradient(900px 500px at 92% 0%,rgba(106,169,255,.08),transparent 55%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+  background-color:var(--bg);
+}
+a{color:var(--gold2)}
+h1,h2,h3{margin:0}
+h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:700}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.topbar{position:sticky;top:0;z-index:60;background:rgba(10,13,19,.82);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+.topbar-inner{max-width:var(--max);margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
+.brand svg{width:26px;height:26px;color:var(--gold)}
+.nav{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.nav a{color:var(--muted);text-decoration:none;font-size:.82rem;padding:7px 10px;border-radius:999px;white-space:nowrap}
+.nav a:hover{color:var(--text);background:var(--panel2)}
+.hero{padding:54px 0 26px}
+.kicker{color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;font-weight:800}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.04;margin:.45rem 0 1rem;letter-spacing:-.02em}
+.hero p{max-width:820px;color:var(--muted);font-size:1.05rem;margin:0}
+.warning{margin-top:24px;border:1px solid rgba(255,107,107,.38);background:var(--red-soft);border-radius:var(--radius);padding:16px 18px;display:flex;gap:12px;align-items:flex-start}
+.warning svg{flex:0 0 auto;width:22px;height:22px;color:#ff8f8f;margin-top:2px}
+.warning strong{color:#ffb3b3}
+.warning p{margin:4px 0 0;color:#e8c9c9;font-size:.9rem}
+.section{padding:42px 0 0}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.section h2{font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.01em}
+.section .sub{color:var(--muted);font-size:.94rem;max-width:820px;margin:.4rem 0 0}
+.panel{background:linear-gradient(180deg,rgba(26,35,51,.92),rgba(20,27,39,.94));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.panel-pad{padding:22px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:22px}
+.quick{display:flex;flex-direction:column;gap:4px;text-align:left;background:linear-gradient(180deg,rgba(26,35,51,.95),rgba(20,27,39,.96));border:1px solid var(--border);border-radius:14px;padding:16px;color:var(--text);cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;font:inherit}
+.quick:hover{transform:translateY(-2px);border-color:rgba(224,180,92,.55);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.quick .kicker{font-size:.66rem}
+.quick-title{font-family:Georgia,"Times New Roman",serif;font-size:1.5rem;font-weight:700;color:var(--gold2);line-height:1.1}
+.quick-main{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green)}
+.quick-sub{font-size:.82rem;color:var(--text)}
+.quick-foot{font-size:.75rem;color:var(--muted);margin-top:2px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--gold-soft);color:var(--gold2);border:1px solid rgba(224,180,92,.28);vertical-align:middle}
+.badge.green{background:var(--green-soft);color:#9af0bd;border-color:rgba(87,214,141,.28)}
+.badge.red{background:var(--red-soft);color:#ffb3b3;border-color:rgba(255,107,107,.28)}
+.muted{color:var(--muted)}
+.small{font-size:.78rem}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);max-width:100%}
+.table-scroll{max-height:440px;overflow:auto}
+table.data{width:100%;border-collapse:collapse;font-size:.84rem;min-width:980px}
+table.data th,table.data td{padding:11px 12px;text-align:right;border-bottom:1px solid rgba(39,51,73,.7);white-space:nowrap}
+table.data th:first-child,table.data td:first-child{text-align:left}
+table.data thead th{position:sticky;top:0;z-index:3;background:var(--panel3);color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em}
+table.data tbody tr{cursor:pointer}
+table.data tbody tr:hover{background:rgba(255,255,255,.03)}
+table.data tbody tr.selected{background:var(--gold-soft);box-shadow:inset 0 0 0 1px rgba(224,180,92,.28)}
+table.data tbody tr.row-warn{background:rgba(255,107,107,.035)}
+table.data .num{font-variant-numeric:tabular-nums}
+table.data .good{color:var(--green)}
+table.data .bad{color:var(--red)}
+table.data tfoot td{background:rgba(17,24,39,.8);font-weight:700;border-top:1px solid var(--border2)}
+.table-note{color:var(--muted2);font-size:.78rem;margin:10px 0 0}
+.sim-grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:18px;align-items:start}
+.sim-grid > *{min-width:0}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.input-grid .full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.78rem;color:var(--muted);font-weight:700}
+.field input,.field select{width:100%;background:#0d1420;border:1px solid var(--border2);color:var(--text);border-radius:10px;padding:10px 12px;font-size:.95rem;outline:none;font:inherit}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(224,180,92,.14)}
+.field .hint{font-size:.7rem;color:var(--muted2)}
+input[type=range]{accent-color:var(--gold);padding:0;height:26px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted);line-height:1.35}
+.check input{margin-top:3px;accent-color:var(--gold);width:16px;height:16px;flex:0 0 auto}
+.check b{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 14px;font:inherit;font-weight:800;font-size:.86rem;cursor:pointer;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1205}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent;border-color:var(--border2);color:var(--text)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.rec{border:1px solid var(--border);border-radius:14px;padding:18px;background:var(--panel2)}
+.rec.ok{border-color:rgba(87,214,141,.35);background:linear-gradient(180deg,rgba(87,214,141,.08),rgba(26,35,51,.9))}
+.rec.warn{border-color:rgba(224,180,92,.4);background:linear-gradient(180deg,rgba(224,180,92,.09),rgba(26,35,51,.9))}
+.rec.bad{border-color:rgba(255,107,107,.4);background:linear-gradient(180deg,rgba(255,107,107,.09),rgba(26,35,51,.9))}
+.rec .kicker{font-size:.64rem}
+.rec h3{font-family:Georgia,"Times New Roman",serif;font-size:1.5rem;margin:2px 0 6px;color:var(--gold2)}
+.rec p{margin:0;color:var(--muted);font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.stat{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:13px}
+.stat small{display:block;color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.stat b{display:block;font-size:1.18rem;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat b.gold{color:var(--gold2)}
+.stat b.good{color:var(--green)}
+.stat b.bad{color:var(--red)}
+.note{margin-top:12px;border:1px solid var(--border);background:rgba(13,20,32,.65);border-radius:12px;padding:12px 14px;color:var(--muted);font-size:.82rem}
+.note.warn{border-color:rgba(224,180,92,.35);background:rgba(224,180,92,.06)}
+.note.bad{border-color:rgba(255,107,107,.35);background:var(--red-soft)}
+.note ul{margin:6px 0 0 18px;padding:0}
+.note li{margin:3px 0}
+.account-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:18px;align-items:start}
+.account-grid > *{min-width:0}
+.account-card{background:linear-gradient(180deg,rgba(26,35,51,.95),rgba(20,27,39,.96));border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.account-card h3{font-family:Georgia,"Times New Roman",serif;font-size:1.7rem;color:var(--gold2);margin:0 0 2px}
+.account-card .plan-line{color:var(--muted);font-size:.84rem;margin:0 0 12px}
+.account-card .line{border-top:1px solid var(--border);padding-top:10px;margin-top:10px;color:var(--muted);font-size:.82rem}
+.account-card .line b{color:var(--text)}
+.account-card a{display:inline-block;margin-top:12px;font-size:.84rem;font-weight:800;text-decoration:none}
+.chart-box{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:12px}
+.chart-box svg{display:block;width:100%;height:auto}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin:6px 2px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.view-toggle{display:inline-flex;background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:3px;gap:2px}
+.view-toggle button{border:0;background:transparent;color:var(--muted);padding:7px 11px;border-radius:999px;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
+.view-toggle button.active{background:var(--gold);color:#1a1205}
+.route-step{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--panel2);margin-top:10px}
+.route-num{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#1a1205;font-weight:900;font-size:.82rem}
+.route-step h3{font-size:1rem;margin:0 0 2px}
+.route-step p{margin:0;color:var(--muted);font-size:.82rem}
+.route-sub{font-family:Georgia,"Times New Roman",serif;font-size:1.25rem;color:var(--gold2);margin:24px 0 8px}
+.route-total{margin-top:14px;border:1px solid rgba(224,180,92,.3);background:var(--gold-soft);border-radius:14px;padding:16px}
+.route-total h3{font-size:1rem;margin:0 0 8px;color:var(--gold2)}
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.risk{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--panel)}
+.risk h3{font-size:1rem;margin:0 0 6px}
+.risk p{margin:0;color:var(--muted);font-size:.86rem}
+.risk.danger{border-color:rgba(255,107,107,.4);background:linear-gradient(180deg,rgba(255,107,107,.08),rgba(20,27,39,.92))}
+.risk.danger h3{color:#ffb3b3}
+details{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--panel2);margin-top:10px}
+details summary{cursor:pointer;font-weight:800;color:var(--gold2)}
+details p,details li{color:var(--muted);font-size:.86rem}
+details code{background:#0d1420;border:1px solid var(--border);padding:1px 5px;border-radius:5px;color:var(--text);font-size:.82em}
+footer{margin-top:54px;border-top:1px solid var(--border);padding:26px 0 40px;color:var(--muted);font-size:.84rem}
+footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+footer a{color:var(--gold2)}
+@media(max-width:980px){.sim-grid,.account-grid{grid-template-columns:1fr}.nav{display:none}}
+@media(max-width:700px){.input-grid{grid-template-columns:1fr}.hero{padding-top:34px}.section{padding-top:32px}.panel-pad{padding:16px}
+  table.data th:first-child,table.data td:first-child{position:sticky;left:0;background:var(--panel);z-index:1}
+  table.data thead th:first-child{background:var(--panel3);z-index:4}
+  table.data tbody tr.selected td:first-child{background:#2a2618}
+}
+@media print{
+  html,body{background:#fff!important;color:#000!important}
+  h1,h2,h3,p,li,td,th,summary,.stat b,.account-card,.account-card .line,.account-card .plan-line,.route-step p,.route-total,.section .sub,.muted,.table-note,.kicker{color:#000!important}
+  .topbar,.no-print,.hero .warning,.tip,.quick-grid,#riesgos,#metodologia,footer{display:none!important}
+  .level-card{background:#fff!important;box-shadow:none!important;border-color:#ccc!important}
+  .level-profit{color:#000!important}
+  .panel,.account-card,.chart-box,.table-wrap,.route-total,.route-step,.risk{box-shadow:none!important;background:#fff!important;border-color:#ccc!important}
+  .section{padding:14px 0}
+  table.data{min-width:0;font-size:9px}
+  table.data th,table.data td{border-color:#ccc}
+  table.data thead th{position:static;background:#eee!important;color:#000!important}
+  .stat{background:#f5f5f5!important;border-color:#ccc!important}
+  .badge{background:#eee!important;color:#000!important;border-color:#ccc!important}
+  .rec{background:#f5f5f5!important;border-color:#ccc!important}
+  a{color:#000;text-decoration:none}
+  .chart-box svg{max-height:260px}
+}
+</style>
+<style id="friendly-theme">
+:root{
+  --bg:#f8f4ec; --bg2:#f1eadf; --panel:#ffffff; --panel2:#fbf8f2; --panel3:#f4eee4;
+  --border:#e8e0d2; --border2:#d8cdbb; --text:#24262b; --muted:#6f6a61; --muted2:#938b7e;
+  --gold:#c98a2e; --gold2:#a86f16; --gold-soft:rgba(201,138,46,.12);
+  --green:#2f9e6b; --green-soft:rgba(47,158,107,.12);
+  --red:#d95c5c; --red-soft:rgba(217,92,92,.10);
+  --blue:#4f7cff; --shadow:0 14px 34px rgba(80,62,30,.08); --radius:18px;
+}
+html{background:var(--bg)}
+h1,h2,.quick-title,.level-name,.account-card h3,.rec h3,.route-sub{font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
+h1,h2{font-weight:800;letter-spacing:-.025em}
+.section h2{display:flex;align-items:center;gap:10px}
+.section h2::before{content:"";width:7px;height:1.1em;border-radius:999px;background:linear-gradient(180deg,#e0a84a,#c98a2e);flex:0 0 auto}
+body{
+  background:
+    radial-gradient(900px 520px at 8% -10%,rgba(201,138,46,.14),transparent 60%),
+    radial-gradient(800px 500px at 96% 0%,rgba(47,158,107,.10),transparent 55%),
+    linear-gradient(180deg,#fbf8f2,#f4ecdf);
+  background-color:var(--bg);color:var(--text);
+}
+.topbar{background:rgba(251,248,242,.86);border-bottom-color:var(--border)}
+.brand{color:var(--text)}
+.nav a{color:var(--muted)}
+.nav a:hover{color:var(--text);background:var(--panel2)}
+.hero h1{color:#1f2228}
+.hero p{color:var(--muted)}
+.hero-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:26px;align-items:center}
+.hero-art{background:linear-gradient(180deg,#fff7e8,#fff);border:1px solid var(--border);border-radius:24px;padding:16px;box-shadow:var(--shadow)}
+.hero-art svg{display:block;width:100%;height:auto}
+@media(max-width:900px){.hero-top{grid-template-columns:1fr}.hero-art{max-width:420px;margin:8px auto 0}}
+.kicker{color:var(--gold)}
+.panel{background:#fff;border-color:var(--border);box-shadow:var(--shadow)}
+.quick{background:#fff;border-color:var(--border);box-shadow:0 8px 22px rgba(80,62,30,.06)}
+.quick:hover{border-color:var(--gold);box-shadow:0 14px 30px rgba(80,62,30,.10)}
+.quick.gold{background:linear-gradient(180deg,#fff7e8,#fff)}
+.quick.green{background:linear-gradient(180deg,#f1fbf5,#fff)}
+.quick.blue{background:linear-gradient(180deg,#f3f7ff,#fff)}
+.quick.cream{background:linear-gradient(180deg,#fffaf0,#fff)}
+.quick-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold2);margin-bottom:3px}
+.quick-icon svg{width:18px;height:18px}
+.quick.green .quick-icon{background:var(--green-soft);color:var(--green)}
+.quick.blue .quick-icon{background:rgba(79,124,255,.12);color:var(--blue)}
+.quick.cream .quick-icon{background:#f4eee4;color:var(--gold2)}
+.quick-sub{color:var(--text)}
+.quick-foot{color:var(--muted)}
+.rec{background:#fff;border-color:var(--border)}
+.rec.ok{background:#f2fbf6;border-color:#c8e9d8}
+.rec.warn{background:#fffaf0;border-color:#eedcb4}
+.rec.bad{background:#fff4f4;border-color:#f0cccc}
+.rec h3{color:var(--gold2)}
+.rec p{color:var(--muted)}
+.stat{background:var(--panel2);border-color:var(--border)}
+.stat small{color:var(--muted2)}
+.stat b{color:var(--text)}
+.account-card{background:#fff;border-color:var(--border);box-shadow:var(--shadow)}
+.account-card h3{color:var(--gold2)}
+.account-card .plan-line,.account-card .line{color:var(--muted)}
+.account-card .line b{color:var(--text)}
+.mine-plan{background:linear-gradient(180deg,#fffaf0,#fff);border:1px solid #eedcb4;border-radius:18px;padding:16px;margin-top:14px}
+.mine-plan-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.mine-plan-kicker{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold2);font-weight:800}
+.mine-plan h3{font-size:1.45rem;margin:2px 0 0;color:var(--gold2)}
+.mine-plan p{margin:2px 0 0;color:var(--muted);font-size:.82rem}
+.mine-plan-goal{text-align:right;font-size:1.55rem;font-weight:900;color:var(--green);font-variant-numeric:tabular-nums;line-height:1.1}
+.mine-plan-goal small{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted2);font-weight:700}
+.mine-plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.mine-plan-grid > div{background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px}
+.mine-plan-grid small{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted2);margin-bottom:2px}
+.mine-plan-grid b{font-size:.84rem;color:var(--text);font-variant-numeric:tabular-nums}
+.mine-progress{height:9px;background:#f1e6d2;border-radius:999px;overflow:hidden;margin-top:12px}
+.mine-progress span{display:block;height:100%;background:linear-gradient(90deg,#e0a84a,#2f9e6b);border-radius:999px}
+.mine-plan-foot{margin-top:8px;font-size:.74rem;color:var(--muted)}
+@media(max-width:700px){.mine-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.chart-box{background:var(--panel2);border-color:var(--border)}
+.table-wrap{background:#fff;border-color:var(--border)}
+table.data{color:var(--text)}
+table.data th,table.data td{border-bottom-color:var(--border)}
+table.data thead th{background:var(--panel3);color:var(--muted)}
+table.data tbody tr:hover{background:#fbf7ef}
+table.data tbody tr.selected{background:#fdf4e2;box-shadow:inset 0 0 0 1px rgba(201,138,46,.28)}
+table.data tbody tr.row-warn{background:#fff8f8}
+table.data tfoot td{background:#fbf8f2;border-top-color:var(--border2)}
+.field label{color:var(--muted)}
+.field input,.field select{background:#fff;border-color:var(--border2);color:var(--text)}
+.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,138,46,.14)}
+.field .hint{color:var(--muted2)}
+.check{color:var(--muted)}
+.check b{color:var(--text)}
+.btn{background:linear-gradient(180deg,#e0a84a,#c98a2e);color:#2a1c08}
+.btn.ghost{background:#fff;border-color:var(--border2);color:var(--text)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold2)}
+.note{background:#fbf8f2;border-color:var(--border);color:var(--muted)}
+.note.warn{background:#fffaf0;border-color:#eedcb4}
+.note.bad{background:#fff4f4;border-color:#f0cccc}
+details{background:var(--panel2);border-color:var(--border)}
+details summary{color:var(--gold2)}
+details code{background:#f4eee4;border-color:var(--border);color:var(--text)}
+.route-step{background:var(--panel2);border-color:var(--border)}
+.route-num{background:linear-gradient(180deg,#e0a84a,#c98a2e);color:#2a1c08}
+.route-sub{color:var(--gold2)}
+.route-total{background:#fffaf0;border-color:#eedcb4}
+.risk{background:#fff;border-color:var(--border);box-shadow:0 8px 22px rgba(80,62,30,.05)}
+.risk h3{color:var(--text)}
+.risk p{color:var(--muted)}
+.view-toggle{background:var(--panel2);border-color:var(--border)}
+.view-toggle button.active{background:linear-gradient(180deg,#e0a84a,#c98a2e);color:#2a1c08}
+.table-note{color:var(--muted2)}
+.section .sub{color:var(--muted)}
+footer{color:var(--muted);border-top-color:var(--border)}
+footer a{color:var(--gold2)}
+.tip{margin-top:22px;display:flex;gap:12px;align-items:flex-start;background:#eef5ff;border:1px solid #cfe0ff;border-radius:16px;padding:14px 16px;color:#2b4a7a}
+.tip svg{flex:0 0 auto;width:20px;height:20px;color:#4f7cff;margin-top:2px}
+.tip strong{color:#1f3a66}
+.tip p{margin:3px 0 0;color:#45618f;font-size:.88rem}
+.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:14px}
+.level-card{display:flex;flex-direction:column;gap:5px;text-align:left;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;color:var(--text);cursor:pointer;font:inherit;box-shadow:0 8px 22px rgba(80,62,30,.05);transition:transform .15s,border-color .15s,box-shadow .15s}
+.level-card:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 14px 30px rgba(80,62,30,.10)}
+.level-card.selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,138,46,.14)}
+.level-card.tone-gold{background:linear-gradient(180deg,#fff7e8,#fff)}
+.level-card.tone-green{background:linear-gradient(180deg,#f1fbf5,#fff)}
+.level-card.tone-blue{background:linear-gradient(180deg,#f3f7ff,#fff)}
+.level-card.tone-red{background:linear-gradient(180deg,#fff5f5,#fff)}
+.level-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.level-name{font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;font-weight:700;color:var(--gold2)}
+.level-goal{font-size:.73rem;color:var(--gold2);font-weight:800;margin-top:1px}
+.level-profit{font-size:1.6rem;font-weight:900;color:var(--green);font-variant-numeric:tabular-nums;line-height:1.1}
+.level-sub{font-size:.72rem;color:var(--muted);margin-top:-3px}
+.level-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:.78rem;color:var(--muted);margin-top:4px}
+.level-stats b{color:var(--text);font-weight:700}
+.level-time{font-size:.7rem;color:var(--muted2);line-height:1.35;margin-top:2px}
+.level-cta{font-size:.76rem;font-weight:800;color:var(--gold2);margin-top:4px}
+details.more{padding:0;background:#fff;border-color:var(--border);overflow:hidden}
+details.more summary{padding:14px 18px;background:var(--panel2);font-weight:800;color:var(--gold2);cursor:pointer}
+details.more summary:hover{background:#fffaf0}
+details.more .table-wrap{margin:12px 18px 0}
+details.more .table-note{padding:10px 18px 16px;margin:0}
+.risk{display:flex;gap:12px;align-items:flex-start}
+.risk-icon{flex:0 0 auto;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold2)}
+.risk-icon.green{background:var(--green-soft);color:var(--green)}
+.risk-icon.blue{background:rgba(79,124,255,.12);color:var(--blue)}
+.risk-icon.red{background:var(--red-soft);color:var(--red)}
+@media(max-width:700px){
+  details.more .table-wrap{margin:10px 10px 0}
+  details.more .table-note{padding:10px}
+}
+</style>
+</head>
+<body id="top">
+<header class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/><path d="M2 20h20"/></svg>
+      <span>RaidLords · Tu plan de cuentas</span>
+    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#tabla">Niveles</a>
+      <a href="#simulador">Tu plan</a>
+      <a href="#cuenta">Ganancia</a>
+      <a href="#ruta">Comprar</a>
+      <a href="#riesgos">Tips</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-copy">
+        <div class="kicker">Tu plan, claro y simple</div>
+        <h1>Armá tu plan de cuentas<br>sin vueltas</h1>
+        <p>Elegí cuántas cuentas querés, cuánto podés invertir y cuánta esencia tenés. La página te dice qué nivel conviene, cuánto podés ganar y en qué orden comprar.</p>
+        <div class="tip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+          <div>
+            <strong>Un dato importante:</strong>
+            <p>El retiro se pausa al llegar a 3× lo depositado y el primer día el tope es $2. Todos los netos ya incluyen la comisión del 5%.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 260" role="presentation" focusable="false">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fff8ea"/>
+              <stop offset="1" stop-color="#fdf3e1"/>
+            </linearGradient>
+          </defs>
+          <circle cx="160" cy="130" r="108" fill="url(#sky)"/>
+          <ellipse cx="160" cy="218" rx="112" ry="18" fill="#efe3cf"/>
+          <rect x="88" y="138" width="144" height="72" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="78" y="112" width="40" height="98" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="202" y="112" width="40" height="98" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
+          <rect x="132" y="92" width="56" height="118" rx="8" fill="#fff" stroke="#c98a2e" stroke-width="3"/>
+          <path d="M78 112 h10 v-10 h10 v10 h10 v-10 h10 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M202 112 h10 v-10 h10 v10 h10 v-10 h10 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M132 92 h10 v-10 h10 v10 h10 v-10 h16 v10" fill="none" stroke="#c98a2e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M74 112 L98 78 L122 112 Z" fill="#e0a84a"/>
+          <path d="M198 112 L222 78 L246 112 Z" fill="#e0a84a"/>
+          <path d="M128 92 L160 54 L192 92 Z" fill="#e0a84a"/>
+          <path d="M160 54 V34" stroke="#7a6a4f" stroke-width="3" stroke-linecap="round"/>
+          <path d="M160 34 h22 l-6 7 6 7 h-22 Z" fill="#2f9e6b"/>
+          <path d="M146 210 V172 a14 14 0 0 1 28 0 V210 Z" fill="#c98a2e" opacity=".85"/>
+          <circle cx="168" cy="188" r="2.5" fill="#fff8ea"/>
+          <rect x="94" y="134" width="10" height="16" rx="5" fill="#c98a2e" opacity=".55"/>
+          <rect x="216" y="134" width="10" height="16" rx="5" fill="#c98a2e" opacity=".55"/>
+          <rect x="150" y="108" width="8" height="14" rx="4" fill="#c98a2e" opacity=".55"/>
+          <rect x="162" y="108" width="8" height="14" rx="4" fill="#c98a2e" opacity=".55"/>
+          <circle cx="252" cy="194" r="18" fill="#f0c96a" stroke="#c98a2e" stroke-width="3"/>
+          <circle cx="252" cy="194" r="10" fill="none" stroke="#fff8ea" stroke-width="2"/>
+          <text x="252" y="199" text-anchor="middle" font-size="14" font-weight="700" fill="#7a5414" font-family="Segoe UI, sans-serif">$</text>
+          <circle cx="226" cy="212" r="14" fill="#f0c96a" stroke="#c98a2e" stroke-width="3"/>
+          <circle cx="226" cy="212" r="7" fill="none" stroke="#fff8ea" stroke-width="2"/>
+          <rect x="52" y="188" width="106" height="52" rx="12" fill="#fff" stroke="#e8e0d2"/>
+          <path d="M64 226 L82 214 L96 220 L112 202 L128 208 L144 196" fill="none" stroke="#2f9e6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="144" cy="196" r="4" fill="#2f9e6b"/>
+          <path d="M64 236 H144" stroke="#efe3cf" stroke-width="2" stroke-linecap="round"/>
+          <path d="M62 104 l4 8 8 4 -8 4 -4 8 -4 -8 -8 -4 8 -4 Z" fill="#e0a84a" opacity=".7"/>
+          <circle cx="264" cy="92" r="4" fill="#57d68d" opacity=".7"/>
+          <circle cx="72" cy="160" r="3" fill="#4f7cff" opacity=".5"/>
+        </svg>
+      </div>
+    </div>
+    <div id="quickGrid" class="quick-grid" aria-label="Recomendaciones rápidas"></div>
+  </section>
+
+  <section id="tabla" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Compará los niveles de un vistazo</h2>
+        <p class="sub">Cada tarjeta es una meta de retiro. Tocá una para probarla en tu plan. Los números son por cuenta y con el escenario base: Mint pagado con tokens depositados y oro del Keep contado.</p>
+      </div>
+    </div>
+    <div id="levelCards" class="level-grid"></div>
+    <p class="table-note">Cada tarjeta muestra la meta de retiro, la ganancia máxima por cuenta, cuántas minas necesitás, cuánta esencia y el Keep. Los niveles bajos usan menos esencia; los altos mueven más dólares por día.</p>
+    <details class="more" style="margin-top:16px">
+      <summary>Ver tabla completa con todos los números</summary>
+      <div class="table-wrap">
+        <table class="data" id="staticTable">
+          <caption class="sr-only">Costo y ganancia estimada por nivel de Royal Mint</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nivel</th>
+              <th scope="col">Depósito</th>
+              <th scope="col">Keep</th>
+              <th scope="col">Plan de minas</th>
+              <th scope="col">Esencia</th>
+              <th scope="col">Reclamos/día</th>
+              <th scope="col">Retiro/día</th>
+              <th scope="col">Neto/día</th>
+              <th scope="col">Ganancia máx.</th>
+              <th scope="col">Días al tope</th>
+              <th scope="col">ROI</th>
+              <th scope="col">Esencia/$/día</th>
+              <th scope="col">$/clic</th>
+            </tr>
+          </thead>
+          <tbody id="staticTableBody"></tbody>
+        </table>
+      </div>
+      <p class="table-note">Depósito = $1 de entrada + precio del Mint. Ganancia máx. = 3× depósito × 0,95 − depósito − oro del Keep. “Retiro/día” es el límite bruto del Mint y “Neto/día” es lo que te queda después de la comisión del 5%. El neto es el del primer día completo con el límite del Mint; en los días siguientes el límite se reduce al superar lo depositado. La tabla no incluye el tiempo de farmear esencia ni el valor de tu tiempo. “Días al tope” es el día en que se llega a 3× lo depositado; después el juego pausa las ventas hasta que deposites más.</p>
+    </details>
+  </section>
+
+  <section id="simulador" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Armá tu plan</h2>
+        <p class="sub">Movés las cuentas, el presupuesto y las entradas por día; todo se actualiza solo. Si no sabés qué nivel elegir, dejá “Auto”.</p>
+      </div>
+      <div class="btn-row no-print" style="margin:0">
+        <button class="btn ghost" type="button" id="resetBtn">Reiniciar</button>
+        <button class="btn ghost" type="button" id="printBtn">Imprimir</button>
+      </div>
+    </div>
+    <div class="sim-grid">
+      <div class="panel panel-pad">
+        <h3 style="font-size:1.1rem;margin-bottom:14px">Tu configuración</h3>
+        <div class="input-grid">
+          <div class="field full">
+            <label for="nAccounts">Cantidad de cuentas</label>
+            <input id="nAccounts" type="number" min="1" max="100" step="1" value="10" inputmode="numeric">
+            <input id="nRange" type="range" min="1" max="100" step="1" value="10" aria-label="Cantidad de cuentas">
+            <span class="hint">1 a 100. Cada cuenta paga su propia entrada y su propio Mint.</span>
+          </div>
+          <div class="field full">
+            <label for="mintLevel">Meta de retiro ($/día)</label>
+            <select id="mintLevel"></select>
+            <span class="hint">Elegí cuánto querés retirar por día (límites del Mint: $2 a $35). “Auto” elige la meta que mejor rinde según tu objetivo.</span>
+          </div>
+          <div class="field full">
+            <label for="objective">¿Qué querés priorizar?</label>
+            <select id="objective">
+              <option value="profit">Máxima ganancia total</option>
+              <option value="roi">Máximo ROI</option>
+              <option value="essence">Máxima ganancia por esencia</option>
+            </select>
+            <span class="hint">“Auto” usa esto para elegir el nivel.</span>
+          </div>
+          <details class="more advanced" style="grid-column:1/-1;margin-top:2px">
+            <summary>Ajustes finos (opcional)</summary>
+            <div class="input-grid" style="padding:14px 18px 4px">
+              <div class="field">
+                <label for="essenceBudget">Presupuesto de esencia (total)</label>
+                <input id="essenceBudget" type="number" min="0" step="100" placeholder="Ej: 100000" inputmode="numeric">
+                <span class="hint">La esencia que podés farmear entre todas las cuentas.</span>
+              </div>
+              <div class="field">
+                <label for="cashBudget">Presupuesto en dinero (total)</label>
+                <input id="cashBudget" type="number" min="0" step="1" placeholder="Ej: 200" inputmode="decimal">
+                <span class="hint">Solo dinero de tu bolsillo: entrada + Mint depositado.</span>
+              </div>
+              <div class="field">
+                <label for="maxClaims">Máximo de reclamos/día (total)</label>
+                <input id="maxClaims" type="number" min="0" step="1" placeholder="Ej: 40" inputmode="numeric">
+                <span class="hint">Entre todas las cuentas.</span>
+              </div>
+              <div class="field">
+                <label for="essencePerHour">Esencia que farmeás por hora</label>
+                <input id="essencePerHour" type="number" min="0" step="100" placeholder="Ej: 2000" inputmode="numeric">
+                <span class="hint">Para estimar el tiempo de farmeo por cuenta.</span>
+              </div>
+              <div class="full check">
+                <input id="mintDeposited" type="checkbox" checked>
+                <label for="mintDeposited"><b>El Mint lo pago con tokens depositados.</b> Así cuenta como “puesto” y sube el tope 3×. Si lo pagás con tokens ganados, no cuenta para el tope.</label>
+              </div>
+              <div class="full check">
+                <input id="countKeepGold" type="checkbox" checked>
+                <label for="countKeepGold"><b>Contar el oro del Keep como costo.</b> Es oro vendible: si lo gastás en el Keep, dejás de venderlo. Desactivalo si querés ver el escenario “sin costo de oportunidad”.</label>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+      <div>
+        <div id="recommendation"></div>
+        <div id="minePlan"></div>
+        <div id="resultStats" class="stats" aria-live="polite"></div>
+        <div id="resultNote"></div>
+        <details class="more" style="margin-top:16px">
+          <summary>Comparar todos los niveles</summary>
+          <div class="table-wrap">
+            <table class="data" id="compareTable">
+              <caption class="sr-only">Comparación de todos los niveles para la cantidad de cuentas elegida</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Nivel</th>
+                  <th scope="col">Retiro/día</th>
+                  <th scope="col">Dinero total</th>
+                  <th scope="col">Esencia total</th>
+                  <th scope="col">Ganancia total</th>
+                  <th scope="col">Reclamos/día</th>
+                  <th scope="col">ROI</th>
+                  <th scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody id="compareBody"></tbody>
+            </table>
+          </div>
+          <p class="table-note">Click en una fila para fijar esa meta y verla en “Tu ganancia” y “Comprar”. Elegí “Auto” en el selector para volver a la recomendación.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="cuenta" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Tu ganancia, día por día</h2>
+        <p class="sub">Mirá el nivel activo, cuánto recuperás y cómo se reparte el ingreso hasta el tope. El gráfico es la forma más rápida de verlo.</p>
+      </div>
+      <div class="view-toggle no-print" role="group" aria-label="Ver por cuenta o total">
+        <button type="button" id="viewAccount" class="active">Por cuenta</button>
+        <button type="button" id="viewTotal">Total (N)</button>
+      </div>
+    </div>
+    <div class="account-grid">
+      <div id="accountSummary"></div>
+      <div>
+        <div class="chart-box">
+          <div id="chart" role="img" aria-label="Gráfico de ganancia acumulada"></div>
+          <div class="legend">
+            <span><i class="dot" style="background:var(--gold)"></i> Acumulado</span>
+            <span><i class="dot" style="background:var(--blue)"></i> Dinero puesto</span>
+            <span><i class="dot" style="background:var(--muted)"></i> Costo total</span>
+            <span><i class="dot" style="background:var(--green)"></i> Tope 3×</span>
+          </div>
+        </div>
+        <details class="more" style="margin-top:20px">
+          <summary id="dailyTitle">Calendario día a día</summary>
+          <div class="table-wrap table-scroll">
+            <table class="data" id="dailyTable">
+              <caption class="sr-only">Calendario diario de cobros hasta el tope 3x</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Día</th>
+                  <th scope="col">Límite/cuenta</th>
+                  <th scope="col">Venta bruta</th>
+                  <th scope="col">Neto del día</th>
+                  <th scope="col">Acumulado</th>
+                  <th scope="col">Restante al tope</th>
+                  <th scope="col">Ganancia acumulada</th>
+                </tr>
+              </thead>
+              <tbody id="dailyBody"></tbody>
+              <tfoot id="dailyFoot"></tfoot>
+            </table>
+          </div>
+          <p class="table-note">El primer día el tope es $2 para todas las cuentas. Después se aplica el límite del Mint y se reduce al superar lo depositado. La columna “Límite/cuenta” es por cuenta; las demás se multiplican por N en la vista total.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="ruta" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Qué comprar y en qué orden</h2>
+        <p class="sub">El camino del nivel activo: entrada → Keep → minas → Royal Mint → cobros. Los costos son por cuenta; el total para N está en el resumen. Si querés producir antes, subí las minas que permita tu Keep actual y después seguí con el Keep.</p>
+      </div>
+    </div>
+    <div id="route"></div>
+    <div id="routeTotals"></div>
+  </section>
+
+  <section id="riesgos" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Cosas a tener en cuenta</h2>
+        <p class="sub">Lo que la calculadora no muestra y puede cambiar el resultado.</p>
+      </div>
+    </div>
+    <div class="risk-grid">
+      <div class="risk">
+        <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3 5 6v5c0 4 3 7 7 9 4-2 7-5 7-9V6l-7-3Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><h3>Tope de 3×</h3><p>El límite diario baja cuando retirás más de lo que pusiste y se pausa al llegar a 3×. La ganancia máxima ronda 1,85× lo depositado: no es un ingreso permanente.</p></div>
+      </div>
+      <div class="risk">
+        <div class="risk-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/><path d="M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></div>
+        <div><h3>Oro del Keep</h3><p>El Keep se paga con oro que podrías vender. A $0,08 por 1.000 oro, el Keep 7 cuesta ~$134 de oportunidad: por eso el N7 rinde menos que el N6 si contás ese oro.</p></div>
+      </div>
+      <div class="risk">
+        <div class="risk-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M7 3h10M7 21h10M7 3v4l5 5-5 5v4M17 3v4l-5 5 5 5v4"/></svg></div>
+        <div><h3>Esencia y tiempo</h3><p>La esencia se farmea. Cada cuenta necesita entre 2.300 y 1.379.300 según el nivel. Si no tenés ese tiempo, el nivel “ideal” no es realista.</p></div>
+      </div>
+      <div class="risk">
+        <div class="risk-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 4l6 6-8 8-3-3 5-11Z"/><path d="M9 15l-4 4"/><path d="M4 20l-1-1"/></svg></div>
+        <div><h3>Raids</h3><p>Una raid se lleva la mitad del oro que está quieto en una mina. El modelo asume que cobrás a tiempo y que nadie te ataca.</p></div>
+      </div>
+      <div class="risk">
+        <div class="risk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4V7Z"/><path d="M12 7v10"/></svg></div>
+        <div><h3>Tokens y comisión</h3><p>El Mint se paga en tokens. Solo los tokens depositados cuentan para el tope 3×. La comisión del 5% ya está incluida en todos los netos.</p></div>
+      </div>
+      <div class="risk">
+        <div class="risk-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7"/></svg></div>
+        <div><h3>Precio del token</h3><p>Los precios están en dólares pero se pagan en tokens al precio del día. Si el token se mueve, el costo real en tokens cambia.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodologia" class="section">
+    <div class="section-head">
+      <div>
+        <h2>Detalles del cálculo</h2>
+        <p class="sub">Por si querés revisar los números. Todo sale de la calculadora y de la guía oficial.</p>
+      </div>
+    </div>
+    <details>
+      <summary>Fórmulas y supuestos</summary>
+      <ul>
+        <li><b>Oro:</b> 1.000 oro = $0,08; $1 = 12.500 oro.</li>
+        <li><b>Neto:</b> venta bruta × 0,95 (comisión 5%).</li>
+        <li><b>Tope bruto:</b> 3 × depósito. <b>Tope neto:</b> 2,85 × depósito.</li>
+        <li><b>Ganancia máxima por cuenta:</b> tope neto − depósito − oro del Keep (si está activado).</li>
+        <li><b>ROI:</b> ganancia máxima ÷ (depósito + oro del Keep).</li>
+        <li><b>Esencia por $/día:</b> esencia de las minas ÷ (límite diario × 0,95).</li>
+        <li><b>Ganancia por clic:</b> ganancia máxima ÷ (días al tope × reclamos/día).</li>
+      </ul>
+      <p><b>Supuestos:</b></p>
+      <ul>
+        <li>Producción de 23 h por día y recolección perfecta; no se pierde oro por raids ni por minas llenas.</li>
+        <li>El plan de minas es el más barato en esencia para alcanzar el límite diario en 23 h (mismo criterio de la calculadora original).</li>
+        <li>No se incluyen tiempos de construcción de minas, aceleraciones, builders ni el tiempo de farmear esencia (salvo que ingreses “esencia por hora”).</li>
+        <li>El Mint se paga con tokens depositados por defecto; el oro del Keep se cuenta como costo de oportunidad por defecto. Ambos se pueden cambiar en el simulador.</li>
+        <li>Todas las cuentas arrancan el mismo día. Si las escalonás, los totales son los mismos pero el flujo diario se reparte.</li>
+        <li>El límite diario que manda es el del Mint (es mayor que el límite por depósito en estos planes).</li>
+      </ul>
+    </details>
+    <details>
+      <summary>¿Por qué N1 es el más eficiente en esencia y N6 el de mayor ganancia?</summary>
+      <p>Los niveles bajos de mina son mucho más baratos por oro/hora: N3 cuesta 1.150 esencia por 600 oro/h, mientras que N10 cuesta 185.550 por 2.800 oro/h. Por eso N1 necesita apenas 3.450 esencia para mover $3/día, y N6 necesita 927.750 para mover $25/día. Si la esencia es el recurso escaso, N1 rinde más por esencia; si el tiempo/entradas es el recurso escaso, N6 gana por clic. El N7 no conviene en términos reales porque el Keep 7 cuesta 1,68M de oro (~$134) y solo agrega $10/día de límite.</p>
+    </details>
+    <details>
+      <summary>Fuentes y fecha</summary>
+      <p>Datos tomados de la <a href="https://site-e53008d4803c426e800e1326b518870a.freebuff.page/" target="_blank" rel="noopener">Calculadora por Mint</a> y de la <a href="https://raidlords.com/guide/" target="_blank" rel="noopener">RaidLords Handbook</a> (secciones Royal Mint, Mina de oro, Minas por Keep y Tokens). Fecha de captura: 27/10/2026. Los precios, límites y reglas pueden cambiar. Esta página no es asesoramiento financiero.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Modelo educativo con datos de la calculadora y la guía oficial. No es asesoramiento financiero.</div>
+    <div>Hecho con HTML/CSS/JS · <a href="#top">Volver arriba</a></div>
+  </div>
+</footer>
+
+<script id="calc-script">
+"use strict";
+const GOLD_PER_USD = 12500;
+const GOLD_USD = 0.08 / 1000;
+const FEE = 0.05;
+const HOURS = 23;
+
+const MINES = {
+  1:{keepReq:1,cost:150,acc:150,rate:200,cap:1000},
+  2:{keepReq:1,cost:300,acc:450,rate:400,cap:2000},
+  3:{keepReq:2,cost:700,acc:1150,rate:600,cap:3000},
+  4:{keepReq:2,cost:1400,acc:2550,rate:800,cap:5000},
+  5:{keepReq:3,cost:3000,acc:5550,rate:1000,cap:10000},
+  6:{keepReq:3,cost:7000,acc:12550,rate:1300,cap:20000},
+  7:{keepReq:4,cost:14000,acc:26550,rate:1600,cap:30000},
+  8:{keepReq:4,cost:28000,acc:54550,rate:1900,cap:50000},
+  9:{keepReq:5,cost:56000,acc:110550,rate:2200,cap:75000},
+  10:{keepReq:5,cost:75000,acc:185550,rate:2800,cap:100000},
+  11:{keepReq:7,cost:85000,acc:270550,rate:3500,cap:150000},
+  12:{keepReq:8,cost:170000,acc:440550,rate:4200,cap:200000},
+  13:{keepReq:10,cost:400000,acc:840550,rate:4900,cap:250000},
+  14:{keepReq:11,cost:800000,acc:1640550,rate:5600,cap:300000},
+  15:{keepReq:12,cost:1200000,acc:2840550,rate:6300,cap:350000}
+};
+
+const KEEPS = {
+  2:{gold:1000,cumGold:1000,time:"instantáneo",minutes:0},
+  3:{gold:4000,cumGold:5000,time:"15 min",minutes:15},
+  4:{gold:25000,cumGold:30000,time:"1 h 30 min",minutes:90},
+  5:{gold:150000,cumGold:180000,time:"3 h",minutes:180},
+  6:{gold:500000,cumGold:680000,time:"6 h",minutes:360},
+  7:{gold:1000000,cumGold:1680000,time:"9 h",minutes:540}
+};
+
+const MINTS = [
+  {key:"none",name:"Sin Mint",price:0,total:0,limit:2,keep:2,levels:[3,3]},
+  {key:"n1",name:"N1",price:2,total:2,limit:3,keep:3,levels:[3,3,3]},
+  {key:"n2",name:"N2",price:5,total:7,limit:5,keep:3,levels:[5,5,4]},
+  {key:"n3",name:"N3",price:8,total:15,limit:8,keep:4,levels:[6,6,5,4]},
+  {key:"n4",name:"N4",price:12,total:27,limit:12,keep:4,levels:[8,7,7,7]},
+  {key:"n5",name:"N5",price:21,total:48,limit:18,keep:5,levels:[9,8,8,8,8]},
+  {key:"n6",name:"N6",price:28,total:76,limit:25,keep:5,levels:[10,10,10,10,10]},
+  {key:"n7",name:"N7",price:46,total:122,limit:35,keep:7,levels:[11,11,11,11,11,7]}
+];
+
+const nf0 = new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat("es-AR",{minimumFractionDigits:1,maximumFractionDigits:1});
+const nf2 = new Intl.NumberFormat("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const int = v => nf0.format(v);
+const num1 = v => nf1.format(v);
+const money = v => "$" + nf2.format(v);
+const pct = v => nf1.format(v) + "%";
+
+function comboText(levels){
+  const counts = {};
+  levels.forEach(l => counts[l] = (counts[l]||0)+1);
+  return Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).map(l => counts[l] + "×N" + l).join(" + ");
+}
+
+function makePlan(mint){
+  const levels = mint.levels.slice().sort((a,b)=>b-a);
+  const essence = levels.reduce((s,l)=>s+MINES[l].acc,0);
+  const rate = levels.reduce((s,l)=>s+MINES[l].rate,0);
+  const cap = levels.reduce((s,l)=>s+MINES[l].cap,0);
+  const targetGold = mint.limit * GOLD_PER_USD;
+  const claims = Math.ceil(targetGold / cap);
+  const keepGold = KEEPS[mint.keep].cumGold;
+  const keepCostUsd = keepGold * GOLD_USD;
+  const deposit = 1 + mint.total;
+  const netDay = mint.limit * (1 - FEE);
+  return {
+    ...mint, levels, essence, rate, cap, targetGold,
+    produced: rate * HOURS, claims, keepGold, keepCostUsd, deposit, netDay,
+    fillHours: cap / rate, essencePerDay: essence / netDay, combo: comboText(levels)
+  };
+}
+
+const PLANS = MINTS.map(makePlan);
+const PLAN_BY_KEY = Object.fromEntries(PLANS.map(p => [p.key,p]));
+
+function simulate(capDeposit, limit, cashOutlay, investmentValue){
+  const capGross = 3 * capDeposit;
+  const rows = [];
+  let W = 0, day = 0, net = 0;
+  let paybackCash = null, paybackTotal = null, capDay = null;
+  while (W < capGross - 1e-9 && day < 365){
+    day++;
+    let applied;
+    if (day === 1) applied = Math.min(2, limit);
+    else if (W <= capDeposit) applied = limit;
+    else if (W <= 2 * capDeposit) applied = limit / 2;
+    else if (W < capGross) applied = limit / 5;
+    else applied = 0;
+    const sale = Math.min(applied, capGross - W);
+    if (sale <= 1e-9) break;
+    const dayNet = sale * (1 - FEE);
+    W += sale;
+    net = W * (1 - FEE);
+    if (paybackCash === null && net >= cashOutlay) paybackCash = day;
+    if (paybackTotal === null && net >= investmentValue) paybackTotal = day;
+    if (W >= capGross - 1e-9) capDay = day;
+    rows.push({day, applied, sale, dayNet, cumGross:W, cumNet:net, remaining:capGross - W, profit:net - investmentValue});
+  }
+  return {rows, paybackCash, paybackTotal, capDay, net, gross:W, capGross};
+}
+
+function evaluatePlan(plan, n, opts = {}){
+  const mintDeposited = opts.mintDeposited !== false;
+  const countKeepGold = opts.countKeepGold !== false;
+  const capDeposit = mintDeposited ? plan.deposit : 1;
+  const cashOutlay = 1 + (mintDeposited ? plan.total : 0);
+  const tokenValue = mintDeposited ? 0 : plan.total;
+  const keepCostUsd = countKeepGold ? plan.keepCostUsd : 0;
+  const investmentValue = cashOutlay + tokenValue + keepCostUsd;
+  const sim = simulate(capDeposit, plan.limit, cashOutlay, investmentValue);
+  const maxProfit = sim.net - investmentValue;
+  const profitNoKeep = sim.net - (cashOutlay + tokenValue);
+  const investing = investmentValue > 0;
+  const roi = investing ? maxProfit / investmentValue * 100 : 0;
+  const cycleDays = sim.capDay || 0;
+  const profitPerDay = cycleDays > 0 ? maxProfit / cycleDays : 0;
+  const profitPer7 = cycleDays > 0 ? maxProfit * 7 / cycleDays : 0;
+  const profitPer30 = cycleDays > 0 ? maxProfit * 30 / cycleDays : 0;
+  const roiPer30 = cycleDays > 0 ? roi * 30 / cycleDays : 0;
+  return {
+    plan, n, mintDeposited, countKeepGold, capDeposit, cashOutlay, tokenValue, keepCostUsd,
+    investmentValue, sim, maxProfit, profitNoKeep,
+    roi, profitPerClick: sim.capDay && plan.claims ? maxProfit / (sim.capDay * plan.claims) : 0,
+    cycleDays, paybackDays: sim.paybackCash, profitPerDay, profitPer7, profitPer30, roiPer30,
+    totalCash: n * cashOutlay, totalTokens: n * tokenValue,
+    totalKeepGold: n * plan.keepGold, totalKeepGoldUsd: n * plan.keepCostUsd,
+    countedKeepGoldUsd: n * keepCostUsd, totalInvestment: n * investmentValue,
+    totalProfit: n * maxProfit, totalProfitNoKeep: n * profitNoKeep,
+    totalEssence: n * plan.essence, totalClaims: n * plan.claims,
+    totalProduction: n * plan.produced, totalNetDay: n * plan.netDay,
+    totalProfitPerDay: n * profitPerDay, totalProfitPer7: n * profitPer7, totalProfitPer30: n * profitPer30,
+    issues: []
+  };
+}
+
+function feasibility(ev, opts = {}){
+  const issues = [];
+  const eb = Number(opts.essenceBudget) || 0;
+  const cb = Number(opts.cashBudget) || 0;
+  const mc = Number(opts.maxClaims) || 0;
+  if (eb > 0 && ev.totalEssence > eb) issues.push({type:"essence", missing:ev.totalEssence - eb, text:"Faltan " + int(ev.totalEssence - eb) + " de esencia"});
+  if (cb > 0 && ev.totalCash > cb) issues.push({type:"cash", missing:ev.totalCash - cb, text:"Faltan " + money(ev.totalCash - cb) + " de dinero"});
+  if (mc > 0 && ev.totalClaims > mc) issues.push({type:"claims", missing:ev.totalClaims - mc, text:"Sobran " + int(ev.totalClaims - mc) + " reclamos/día"});
+  return issues;
+}
+
+function score(ev, objective){
+  if (objective === "roi") return ev.roi;
+  if (objective === "essence") return ev.plan.essence > 0 ? ev.maxProfit / ev.plan.essence : ev.maxProfit;
+  return ev.totalProfit;
+}
+
+function penalty(ev, opts = {}){
+  const eb = Number(opts.essenceBudget) || 0;
+  const cb = Number(opts.cashBudget) || 0;
+  const mc = Number(opts.maxClaims) || 0;
+  let p = 0;
+  if (eb > 0) p += Math.max(0, ev.totalEssence - eb) / eb;
+  if (cb > 0) p += Math.max(0, ev.totalCash - cb) / cb;
+  if (mc > 0) p += Math.max(0, ev.totalClaims - mc) / mc;
+  return p;
+}
+
+function choosePlan(n, opts = {}){
+  const objective = opts.objective || "profit";
+  const evaluations = PLANS.map(plan => {
+    const ev = evaluatePlan(plan, n, opts);
+    ev.issues = feasibility(ev, opts);
+    ev.feasible = ev.issues.length === 0;
+    return ev;
+  });
+  const positive = evaluations.filter(ev => ev.maxProfit > 0);
+  const pool = positive.length ? positive : evaluations;
+  const feasible = pool.filter(ev => ev.feasible);
+  let best;
+  if (feasible.length){
+    best = feasible.reduce((a,b) => score(b, objective) > score(a, objective) + 1e-9 ? b : a);
+  } else {
+    best = pool.reduce((a,b) => {
+      const pa = penalty(a, opts), pb = penalty(b, opts);
+      if (pb < pa - 1e-9) return b;
+      if (Math.abs(pb - pa) < 1e-9 && score(b, objective) > score(a, objective) + 1e-9) return b;
+      return a;
+    });
+  }
+  return {evaluations, best, hasFeasible: feasible.length > 0};
+}
+
+function buildOrder(plan){
+  const steps = [];
+  steps.push({kind:"entry", label:"Entrada", resource:"USD", cost:1, detail:"Pago único en ETH"});
+  for (let k = 2; k <= plan.keep; k++){
+    const info = KEEPS[k];
+    steps.push({kind:"keep", level:k, label:"Keep " + k, resource:"oro", cost:info.gold, cumGold:info.cumGold, time:info.time, minutes:info.minutes, detail:"Acumulado " + int(info.cumGold) + " de oro"});
+  }
+  const maxLvl = Math.max(...plan.levels);
+  let cumEssence = 0;
+  for (let l = 1; l <= maxLvl; l++){
+    const count = plan.levels.filter(t => t >= l).length;
+    if (!count) continue;
+    const inc = MINES[l].cost;
+    const cost = count * inc;
+    cumEssence += cost;
+    const cumRate = plan.levels.reduce((s,t) => s + MINES[Math.min(t,l)].rate, 0);
+    const cumCap = plan.levels.reduce((s,t) => s + MINES[Math.min(t,l)].cap, 0);
+    steps.push({kind:"mine", level:l, count, inc, cost, cumEssence, cumRate, cumCap, keepReq:MINES[l].keepReq, label:"Minas a N" + l, detail:count + " mina" + (count > 1 ? "s" : "") + " × N" + l});
+  }
+  steps.push({kind:"mint", label:"Royal Mint " + plan.name, resource:"USD", cost:plan.total, limit:plan.limit, detail:plan.total ? "$" + int(plan.total) + " en tokens, instantáneo" : "Sin costo"});
+  steps.push({kind:"sell", label:"Cobrar y vender", resource:"—", cost:0, detail:"Cobrá cada " + num1(plan.fillHours) + " h; el primer día el tope es $2"});
+  return steps;
+}
+
+function formatMinutes(m){
+  if (!m) return "instantáneo";
+  const h = Math.floor(m/60), min = m%60;
+  return (h ? h + " h " : "") + (min ? min + " min" : "");
+}
+
+const RAID_API = {GOLD_PER_USD, GOLD_USD, FEE, MINES, KEEPS, MINTS, PLANS, PLAN_BY_KEY, simulate, evaluatePlan, feasibility, choosePlan, buildOrder, formatMinutes, score, int, money, pct, num1};
+if (typeof window !== "undefined") window.RAID = RAID_API;
+if (typeof globalThis !== "undefined") globalThis.RAID = RAID_API;
+</script>
+
+<script id="ui-script">
+(function(){
+"use strict";
+const {PLANS, PLAN_BY_KEY, MINES, KEEPS, evaluatePlan, choosePlan, buildOrder, formatMinutes, int, money, pct, num1, GOLD_USD} = window.RAID;
+
+const $ = (s, root = document) => root.querySelector(s);
+const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+
+const DEFAULTS = {n:10, level:"auto", essenceBudget:"", cashBudget:"", maxClaims:"", objective:"profit", mintDeposited:true, countKeepGold:true, essencePerHour:"", view:"account"};
+const state = {...DEFAULTS};
+const LS_KEY = "raidlords-farm-calc-v1";
+
+const BADGES = {
+  none:null,
+  n1:{label:"Mejor esencia",cls:""},
+  n2:{label:"Mejor ROI",cls:"green"},
+  n3:{label:"Equilibrio",cls:""},
+  n4:{label:"Evitar",cls:"red"},
+  n5:{label:"1 entrada eficiente",cls:"green"},
+  n6:{label:"Mayor ganancia",cls:""},
+  n7:{label:"Peor ROI",cls:"red"}
+};
+
+const QUICK = [
+  {key:"n1", tone:"gold", icon:"coin", kicker:"Mejor por esencia", foot:"El más barato de farmear: 3.450 esencia para ~$5,15."},
+  {key:"n2", tone:"green", icon:"chart", kicker:"Mejor ROI", foot:"ROI ~171% y solo 3 reclamos/día."},
+  {key:"n3", tone:"cream", icon:"balance", kicker:"Equilibrio realista", foot:"2 reclamos/día y ~$27,20 de ganancia máxima."},
+  {key:"n6", tone:"blue", icon:"crown", kicker:"Mayor ganancia absoluta", foot:"1 reclamo/día; ~$128,05 por cuenta."}
+];
+
+const ICONS = {
+  coin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5h5M9.5 13.5h5"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7"/></svg>',
+  balance:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l-3 6h6L5 7ZM19 7l-3 6h6l-3-6Z"/></svg>',
+  crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 18h16M4 18l2-9 4 4 2-8 2 8 4-4 2 9"/></svg>'
+};
+
+const LEVEL_TONES = {none:"cream",n1:"gold",n2:"green",n3:"cream",n4:"red",n5:"blue",n6:"gold",n7:"red"};
+
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+function objectiveLabel(o){return o === "roi" ? "máximo ROI" : o === "essence" ? "máxima ganancia por esencia" : "máxima ganancia total";}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    Object.keys(state).forEach(k => { if (saved[k] !== undefined) state[k] = saved[k]; });
+  }catch(e){}
+  state.n = clamp(parseInt(state.n,10) || 10, 1, 100);
+  state.level = (state.level === "auto" || PLAN_BY_KEY[state.level]) ? state.level : "auto";
+  state.objective = ["profit","roi","essence"].includes(state.objective) ? state.objective : "profit";
+  state.mintDeposited = state.mintDeposited !== false;
+  state.countKeepGold = state.countKeepGold !== false;
+  state.view = state.view === "total" ? "total" : "account";
+}
+function saveState(){
+  try{localStorage.setItem(LS_KEY, JSON.stringify(state));}catch(e){}
+}
+
+function buildMintOptions(){
+  const sel = $("#mintLevel");
+  sel.innerHTML = '<option value="auto">Auto · la mejor para tu objetivo</option>' + PLANS.map(p => '<option value="' + p.key + '">' + p.name + ' · ' + money(p.limit) + '/día' + (p.total ? ' (Mint ' + money(p.total) + ')' : '') + '</option>').join("");
+}
+
+function renderQuickCards(){
+  $("#quickGrid").innerHTML = QUICK.map(q => {
+    const p = PLAN_BY_KEY[q.key];
+    const ev = evaluatePlan(p, 1, {mintDeposited:true,countKeepGold:true});
+    return '<button class="quick ' + (q.tone || "") + '" type="button" data-level="' + p.key + '">' +
+      '<span class="quick-icon">' + (ICONS[q.icon] || "") + '</span>' +
+      '<span class="kicker">' + q.kicker + '</span>' +
+      '<span class="quick-title">' + p.name + '</span>' +
+      '<span class="quick-main">' + money(ev.maxProfit) + '</span>' +
+      '<span class="quick-sub">Retiro ' + money(p.limit) + '/día · ' + int(p.essence) + ' esencia · ' + p.claims + ' reclamo' + (p.claims > 1 ? 's' : '') + '/día</span>' +
+      '<span class="quick-foot">' + q.foot + '</span>' +
+    '</button>';
+  }).join("");
+}
+
+function renderLevelCards(activeKey){
+  const grid = $("#levelCards");
+  if (!grid) return;
+  grid.innerHTML = PLANS.map(p => {
+    const ev = evaluatePlan(p, 1, {mintDeposited:true,countKeepGold:true});
+    const badge = BADGES[p.key] ? '<span class="badge ' + BADGES[p.key].cls + '">' + BADGES[p.key].label + '</span>' : "";
+    const tone = LEVEL_TONES[p.key] || "";
+    return '<button class="level-card tone-' + tone + (p.key === activeKey ? " selected" : "") + '" type="button" data-level="' + p.key + '">' +
+      '<div class="level-top"><span class="level-name">' + p.name + '</span>' + badge + '</div>' +
+      '<div class="level-goal">Retiro ' + money(p.limit) + '/día · neto ' + money(p.netDay) + '</div>' +
+      '<div class="level-profit">' + money(ev.maxProfit) + '</div>' +
+      '<div class="level-sub">ganancia máxima por cuenta</div>' +
+      '<div class="level-stats">' +
+        '<span><b>' + p.levels.length + '</b> mina' + (p.levels.length > 1 ? 's' : '') + '</span>' +
+        '<span><b>' + p.claims + '</b> reclamo' + (p.claims > 1 ? 's' : '') + '/día</span>' +
+        '<span><b>' + int(p.essence) + '</b><br>esencia</span>' +
+        '<span><b>' + pct(ev.roi) + '</b><br>ROI</span>' +
+      '</div>' +
+      '<div class="level-time">Keep K' + p.keep + ' · ' + p.combo + '</div>' +
+      '<span class="level-cta">Probar esta meta →</span>' +
+    '</button>';
+  }).join("");
+}
+
+function renderStaticTable(activeKey){
+  const tbody = $("#staticTableBody");
+  tbody.innerHTML = PLANS.map(p => {
+    const ev = evaluatePlan(p, 1, {mintDeposited:true,countKeepGold:true});
+    const badge = BADGES[p.key] ? '<span class="badge ' + BADGES[p.key].cls + '">' + BADGES[p.key].label + '</span>' : "";
+    const cls = [p.key === activeKey ? "selected" : "", (p.key === "n7" || ev.maxProfit < 0) ? "row-warn" : ""].filter(Boolean).join(" ");
+    return '<tr data-level="' + p.key + '" class="' + cls + '" title="Click para probar este nivel">' +
+      '<td><strong>' + p.name + '</strong> ' + badge + '<br><small class="muted">' + (p.total ? "Mint " + money(p.total) : "Sin costo de Mint") + '</small></td>' +
+      '<td class="num">' + money(ev.cashOutlay) + '</td>' +
+      '<td class="num">K' + p.keep + '</td>' +
+      '<td>' + p.combo + '</td>' +
+      '<td class="num">' + int(p.essence) + '</td>' +
+      '<td class="num">' + p.claims + '</td>' +
+      '<td class="num">' + money(p.limit) + '</td>' +
+      '<td class="num">' + money(p.netDay) + '</td>' +
+      '<td class="num ' + (ev.maxProfit >= 0 ? "good" : "bad") + '">' + money(ev.maxProfit) + '</td>' +
+      '<td class="num">' + ev.sim.capDay + '</td>' +
+      '<td class="num">' + pct(ev.roi) + '</td>' +
+      '<td class="num">' + int(p.essencePerDay) + '</td>' +
+      '<td class="num">' + money(ev.profitPerClick) + '</td>' +
+    '</tr>';
+  }).join("");
+}
+
+function renderRecommendation(chosen, active, opts){
+  let title, text, cls;
+  if (state.level === "auto"){
+    if (chosen.hasFeasible){
+      title = "Recomendado: " + chosen.best.plan.name;
+      text = "Con " + state.n + " cuenta" + (state.n === 1 ? "" : "s") + " y objetivo “" + objectiveLabel(state.objective) + "”, este es el mejor nivel que cumple tus límites. Ganancia total estimada: " + money(chosen.best.totalProfit) + ". Esencia total: " + int(chosen.best.totalEssence) + ".";
+      cls = chosen.best.maxProfit >= 0 ? "ok" : "bad";
+    }else{
+      title = "No hay nivel viable";
+      text = "Con esas restricciones no hay nivel que cumpla todo. Lo más cercano es " + chosen.best.plan.name + ": " + (chosen.best.issues.map(i => i.text).join(" · ") || "revisá los límites") + ".";
+      cls = "warn";
+    }
+  }else{
+    title = "Meta fija: " + active.plan.name;
+    if (active.issues.length){
+      text = "No cumple: " + active.issues.map(i => i.text).join(" · ") + ".";
+      cls = "warn";
+    }else{
+      text = active.maxProfit >= 0 ? "Cumple tus restricciones. Ganancia total estimada: " + money(active.totalProfit) + ". Esencia total: " + int(active.totalEssence) + "." : "Ojo: con estas opciones esta meta pierde dinero.";
+      cls = active.maxProfit >= 0 ? "ok" : "bad";
+    }
+  }
+  if (active.maxProfit < 0){cls = "bad"; text += " La ganancia del nivel activo es negativa.";}
+  $("#recommendation").innerHTML = '<div class="rec ' + cls + '"><div class="kicker">Resultado del simulador</div><h3>' + title + '</h3><p>' + text + '</p></div>';
+}
+
+function renderResultStats(active){
+  const stats = [
+    ["Dinero puesto (total)", money(active.totalCash), ""],
+    ["Oro del Keep (total)", int(active.totalKeepGold), ""],
+    ["Oro del Keep en $", money(active.totalKeepGoldUsd), active.countKeepGold ? "" : "muted"],
+    ["Ganancia total", money(active.totalProfit), active.totalProfit >= 0 ? "good" : "bad"],
+    ["ROI", pct(active.roi), active.roi >= 0 ? "good" : "bad"],
+    ["Días al tope", active.sim.capDay, ""],
+    ["Ganancia por clic", money(active.profitPerClick), ""],
+    ["Neto/día (total)", money(active.totalNetDay), "gold"]
+  ];
+  $("#resultStats").innerHTML = stats.map(s => '<div class="stat"><small>' + s[0] + '</small><b class="' + s[2] + '">' + s[1] + '</b></div>').join("");
+}
+
+function renderResultNote(active, opts){
+  const notes = [];
+  if (!state.mintDeposited) notes.push('<div class="note warn"><b>Mint con tokens ganados:</b> no cuenta para el tope 3×. El máximo retirable sigue siendo 3× la entrada de $1 ($3 brutos, $2,85 netos). El Mint solo acelera; no aumenta la ganancia total.</div>');
+  if (!state.countKeepGold) notes.push('<div class="note warn">No estás contando el oro del Keep como costo. Si ese oro lo podrías vender, la ganancia real es menor.</div>');
+  if (active.maxProfit < 0) notes.push('<div class="note bad"><b>Ganancia negativa:</b> con estas opciones el nivel activo no recupera lo invertido. Probá otro nivel, bajá cuentas o revisá los toggles.</div>');
+  if (active.issues.length) notes.push('<div class="note bad"><b>No cumple tus límites:</b><ul>' + active.issues.map(i => '<li>' + i.text + '</li>').join("") + '</ul></div>');
+  const eb = Number(state.essenceBudget) || 0, cb = Number(state.cashBudget) || 0, mc = Number(state.maxClaims) || 0;
+  const fits = [];
+  if (eb > 0) fits.push(Math.floor(eb / active.plan.essence));
+  if (cb > 0) fits.push(Math.floor(cb / active.cashOutlay));
+  if (mc > 0) fits.push(Math.floor(mc / active.plan.claims));
+  if (fits.length){
+    const fit = Math.min(...fits);
+    if (fit < state.n) notes.push('<div class="note warn">Con tus límites, este nivel alcanza para <b>' + int(fit) + ' cuenta' + (fit === 1 ? '' : 's') + '</b>. Estás simulando ' + state.n + '.</div>');
+  }
+  if (eb === 0 && active.plan.essence > 100000) notes.push('<div class="note warn">Este nivel necesita <b>' + int(active.totalEssence) + '</b> de esencia para ' + state.n + ' cuenta' + (state.n === 1 ? '' : 's') + '. Si no la tenés, abrí “Ajustes finos” y cargá tu presupuesto de esencia, o mirá N1/N2/N3.</div>');
+  $("#resultNote").innerHTML = notes.join("");
+}
+
+function renderCompare(chosen, active){
+  const tbody = $("#compareBody");
+  tbody.innerHTML = chosen.evaluations.map(ev => {
+    const p = ev.plan;
+    const ok = ev.feasible;
+    const status = ok ? '<span class="badge green">OK</span>' : '<span class="badge red">' + (ev.issues[0] ? ev.issues[0].text : "No cumple") + '</span>';
+    return '<tr data-level="' + p.key + '" class="' + (p.key === active.plan.key ? "selected" : "") + '" title="Click para fijar esta meta">' +
+      '<td><strong>' + p.name + '</strong></td>' +
+      '<td class="num">' + money(p.limit) + '</td>' +
+      '<td class="num">' + money(ev.totalCash) + '</td>' +
+      '<td class="num">' + int(ev.totalEssence) + '</td>' +
+      '<td class="num ' + (ev.totalProfit >= 0 ? "good" : "bad") + '">' + money(ev.totalProfit) + '</td>' +
+      '<td class="num">' + int(ev.totalClaims) + '</td>' +
+      '<td class="num">' + pct(ev.roi) + '</td>' +
+      '<td>' + status + '</td>' +
+    '</tr>';
+  }).join("");
+}
+
+function renderMinePlan(active){
+  const p = active.plan;
+  const n = state.n;
+  const totalMines = n * p.levels.length;
+  const totalEssence = n * p.essence;
+  const totalRate = n * p.rate;
+  const totalProduced = n * p.produced;
+  const totalTarget = n * p.targetGold;
+  const over = totalProduced - totalTarget;
+  const cover = totalTarget > 0 ? totalProduced / totalTarget * 100 : 0;
+  const bar = Math.min(100, cover);
+  const html = '<div class="mine-plan">' +
+    '<div class="mine-plan-head">' +
+      '<div><div class="mine-plan-kicker">Para tu meta de retiro</div><h3>' + money(p.limit) + ' por día</h3><p>Neto ' + money(p.netDay) + ' por cuenta · ' + n + ' cuenta' + (n === 1 ? '' : 's') + '</p></div>' +
+      '<div class="mine-plan-goal">' + num1(cover) + '%<small>meta cubierta</small></div>' +
+    '</div>' +
+    '<div class="mine-plan-grid">' +
+      '<div><small>Keep / cuenta</small><b>K' + p.keep + '</b></div>' +
+      '<div><small>Minas / cuenta</small><b>' + p.combo + '</b></div>' +
+      '<div><small>Minas totales</small><b>' + int(totalMines) + '</b></div>' +
+      '<div><small>Esencia total</small><b>' + int(totalEssence) + '</b></div>' +
+      '<div><small>Producción total</small><b>' + int(totalRate) + ' oro/h</b></div>' +
+      '<div><small>Llenado / cuenta</small><b>' + num1(p.fillHours) + ' h</b></div>' +
+      '<div><small>Reclamos/día total</small><b>' + int(n * p.claims) + '</b></div>' +
+      '<div><small>Oro en 23 h total</small><b>' + int(totalProduced) + '</b></div>' +
+    '</div>' +
+    '<div class="mine-progress"><span style="width:' + bar.toFixed(1) + '%"></span></div>' +
+    '<div class="mine-plan-foot">Meta: ' + int(totalTarget) + ' oro · el plan produce ' + int(totalProduced) + ' en 23 h · ' + (over >= 0 ? 'sobran ' + int(over) : 'faltan ' + int(-over)) + ' oro.</div>' +
+  '</div>';
+  $("#minePlan").innerHTML = html;
+}
+
+function renderSimulator(chosen, active, opts){
+  renderRecommendation(chosen, active, opts);
+  renderMinePlan(active);
+  renderResultStats(active);
+  renderResultNote(active, opts);
+  renderCompare(chosen, active);
+}
+
+function renderAccount(active){
+  const p = active.plan;
+  const isAuto = state.level === "auto";
+  const badge = isAuto ? '<span class="badge green">Recomendado</span>' : "";
+  const keepLine = active.countKeepGold ? "contado como costo" : "no contado";
+  const tokenLine = active.mintDeposited ? "Mint pagado con tokens depositados" : "Mint pagado con tokens ganados (no cuenta para el tope 3×)";
+  const farm = Number(state.essencePerHour) > 0 ? ' · farmeo: ~' + num1(p.essence / Number(state.essencePerHour) / 24) + ' días por cuenta' : '';
+  const html = '<div class="account-card">' +
+    '<div class="kicker">Meta activa</div>' +
+    '<h3>' + p.name + ' ' + badge + '</h3>' +
+    '<p class="plan-line">Retiro ' + money(p.limit) + '/día · neto ' + money(p.netDay) + ' · Keep K' + p.keep + ' · ' + p.combo + ' (' + p.levels.length + ' mina' + (p.levels.length > 1 ? 's' : '') + ') · ' + p.claims + ' reclamo' + (p.claims > 1 ? 's' : '') + '/día · llenado cada ' + num1(p.fillHours) + ' h' + farm + '</p>' +
+    '<div class="stats">' +
+      '<div class="stat"><small>Ganancia máx.</small><b class="' + (active.maxProfit >= 0 ? 'good' : 'bad') + '">' + money(active.maxProfit) + '</b></div>' +
+      '<div class="stat"><small>Neto/día</small><b class="gold">' + money(p.netDay) + '</b></div>' +
+      '<div class="stat"><small>Esencia</small><b>' + int(p.essence) + '</b></div>' +
+      '<div class="stat"><small>Reclamos/día</small><b>' + p.claims + '</b></div>' +
+      '<div class="stat"><small>Días al tope</small><b>' + active.sim.capDay + '</b></div>' +
+      '<div class="stat"><small>ROI</small><b class="' + (active.roi >= 0 ? 'good' : 'bad') + '">' + pct(active.roi) + '</b></div>' +
+    '</div>' +
+    '<div class="line"><b>Depósito:</b> ' + money(active.cashOutlay) + ' · <b>$/clic:</b> ' + money(active.profitPerClick) + '</div>' +
+    '<div class="line"><b>Oro del Keep:</b> ' + int(p.keepGold) + ' (' + money(p.keepCostUsd) + ', ' + keepLine + '). Equivale a ~' + num1(p.keepGold / p.rate) + ' h de producción final.</div>' +
+    '<div class="line"><b>Tokens:</b> ' + tokenLine + '.</div>' +
+    '<div class="line"><b>Total con ' + state.n + ' cuenta' + (state.n === 1 ? '' : 's') + ':</b> ' + money(active.totalProfit) + ' de ganancia · ' + int(active.totalEssence) + ' esencia · ' + int(active.totalClaims) + ' reclamos/día.</div>' +
+    '<a href="#ruta">Ver qué comprar →</a>' +
+  '</div>';
+  $("#accountSummary").innerHTML = html;
+}
+
+function renderChart(active){
+  const mult = state.view === "total" ? state.n : 1;
+  const rows = active.sim.rows;
+  if (!rows.length){$("#chart").innerHTML = '<p class="muted">Sin datos.</p>'; return;}
+  const W = 800, H = 300, pad = {l:66,r:20,t:18,b:38};
+  const maxY = Math.max(1, active.sim.net * mult);
+  const x = i => pad.l + (rows.length === 1 ? 0.5 : i / (rows.length - 1)) * (W - pad.l - pad.r);
+  const y = v => pad.t + (1 - v / maxY) * (H - pad.t - pad.b);
+  const linePath = rows.map((r,i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(r.cumNet * mult).toFixed(1)).join(' ');
+  const areaPath = 'M' + x(0).toFixed(1) + ',' + y(0).toFixed(1) + ' ' + linePath.replace(/^M/, 'L') + ' L' + x(rows.length-1).toFixed(1) + ',' + y(0).toFixed(1) + ' Z';
+  let grid = '';
+  for (let i = 0; i <= 4; i++){
+    const v = maxY * i / 4, yy = y(v);
+    grid += '<line x1="' + pad.l + '" y1="' + yy.toFixed(1) + '" x2="' + (W-pad.r) + '" y2="' + yy.toFixed(1) + '" stroke="rgba(36,38,43,.08)" stroke-width="1"/>';
+    grid += '<text x="' + (pad.l-10) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end" fill="#938b7e" font-size="10">' + money(v) + '</text>';
+  }
+  const xLabels = [];
+  const idxs = rows.length <= 5 ? rows.map((_,i)=>i) : [0, Math.floor((rows.length-1)/2), rows.length-1];
+  idxs.forEach(i => { xLabels.push('<text x="' + x(i).toFixed(1) + '" y="' + (H-14) + '" text-anchor="middle" fill="#938b7e" font-size="10">Día ' + rows[i].day + '</text>'); });
+  const points = rows.map((r,i) => '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(r.cumNet*mult).toFixed(1) + '" r="3" fill="#e0a84a"><title>Día ' + r.day + ' · Neto ' + money(r.cumNet*mult) + ' · Ganancia ' + money(r.cumNet*mult - (state.view === "total" ? active.totalInvestment : active.investmentValue)) + '</title></circle>').join('');
+  const cashLine = active.cashOutlay * mult, totalLine = active.investmentValue * mult;
+  const dash = (v,color,label) => v > 0 && v <= maxY ? '<line x1="' + pad.l + '" y1="' + y(v).toFixed(1) + '" x2="' + (W-pad.r) + '" y2="' + y(v).toFixed(1) + '" stroke="' + color + '" stroke-width="1.3" stroke-dasharray="5 4"/><text x="' + (W-pad.r) + '" y="' + (y(v)-5).toFixed(1) + '" text-anchor="end" fill="' + color + '" font-size="10">' + label + '</text>' : '';
+  const svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-label="Ganancia acumulada por día"><desc>La línea dorada muestra la ganancia neta acumulada. Las líneas punteadas marcan el dinero puesto, el costo total y el tope 3x.</desc>' +
+    grid +
+    '<path d="' + areaPath + '" fill="rgba(201,138,46,.14)"/>' +
+    '<path d="' + linePath + '" fill="none" stroke="#c98a2e" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>' +
+    dash(cashLine, '#4f7cff', 'Dinero') +
+    dash(totalLine, '#938b7e', 'Costo total') +
+    dash(maxY, '#2f9e6b', 'Tope 3×') +
+    points + xLabels +
+    '<line x1="' + pad.l + '" y1="' + pad.t + '" x2="' + pad.l + '" y2="' + (H-pad.b) + '" stroke="rgba(36,38,43,.18)"/>' +
+    '<line x1="' + pad.l + '" y1="' + (H-pad.b) + '" x2="' + (W-pad.r) + '" y2="' + (H-pad.b) + '" stroke="rgba(36,38,43,.18)"/>' +
+  '</svg>';
+  $("#chart").innerHTML = svg;
+}
+
+function renderDailyTable(active){
+  const total = state.view === "total";
+  const mult = total ? state.n : 1;
+  const inv = total ? active.totalInvestment : active.investmentValue;
+  const rows = active.sim.rows;
+  const body = rows.map(r => '<tr>' +
+    '<td class="num">' + r.day + '</td>' +
+    '<td class="num">' + money(r.applied) + '</td>' +
+    '<td class="num">' + money(r.sale * mult) + '</td>' +
+    '<td class="num">' + money(r.dayNet * mult) + '</td>' +
+    '<td class="num">' + money(r.cumNet * mult) + '</td>' +
+    '<td class="num">' + money(r.remaining * mult) + '</td>' +
+    '<td class="num ' + (r.cumNet * mult - inv >= 0 ? "good" : "bad") + '">' + money(r.cumNet * mult - inv) + '</td>' +
+  '</tr>').join('');
+  $("#dailyBody").innerHTML = body;
+  $("#dailyFoot").innerHTML = '<tr><td>Total</td><td class="num">—</td><td class="num">' + money(active.sim.gross * mult) + '</td><td class="num">' + money(active.sim.net * mult) + '</td><td class="num">' + money(active.sim.net * mult) + '</td><td class="num">$0,00</td><td class="num ' + (active.sim.net * mult - inv >= 0 ? "good" : "bad") + '">' + money(active.sim.net * mult - inv) + '</td></tr>';
+  $("#dailyTitle").textContent = total ? 'Calendario día a día · ' + state.n + ' cuentas' : 'Calendario día a día · por cuenta';
+}
+
+function renderRoute(active){
+  const p = active.plan;
+  const steps = buildOrder(p);
+  const n = state.n;
+  let stepNo = 0;
+  const next = () => ++stepNo;
+  const entry = steps.find(s => s.kind === "entry");
+  const keeps = steps.filter(s => s.kind === "keep");
+  const mines = steps.filter(s => s.kind === "mine");
+  const mint = steps.find(s => s.kind === "mint");
+  const sell = steps.find(s => s.kind === "sell");
+  let html = '';
+
+  html += '<div class="route-step"><div class="route-num">' + next() + '</div><div><h3>Entrada al juego</h3><p>$1 por cuenta en ETH · total para ' + n + ' cuenta' + (n === 1 ? '' : 's') + ': <b>' + money(n) + '</b>. Sin entrada no hay cuenta.</p></div></div>';
+
+  html += '<h3 class="route-sub">Keep: oro que necesitás</h3>';
+  if (keeps.length){
+    let cumMin = 0;
+    html += '<details class="more" style="margin-top:10px"><summary>Ver detalle del Keep (oro)</summary><div class="table-wrap"><table class="data" style="min-width:640px"><thead><tr><th>Paso</th><th>Keep</th><th>Oro</th><th>Tiempo</th><th>Acumulado</th><th>Equivale a</th><th>≈ h de producción final</th></tr></thead><tbody>';
+    keeps.forEach(k => {
+      cumMin += k.minutes;
+      html += '<tr><td class="num">' + next() + '</td><td><strong>K' + k.level + '</strong></td><td class="num">' + int(k.cost) + '</td><td class="num">' + k.time + '</td><td class="num">' + int(k.cumGold) + '</td><td class="num">' + money(k.cumGold * GOLD_USD) + '</td><td class="num">' + num1(k.cumGold / p.rate) + ' h</td></tr>';
+    });
+    html += '</tbody><tfoot><tr><td>Total</td><td>K' + p.keep + '</td><td class="num">' + int(p.keepGold) + '</td><td class="num">' + formatMinutes(cumMin) + '</td><td class="num">' + int(p.keepGold) + '</td><td class="num">' + money(p.keepGold * GOLD_USD) + '</td><td class="num">' + num1(p.keepGold / p.rate) + ' h</td></tr></tfoot></table></div></details>';
+  } else {
+    html += '<p class="muted small">Este plan no necesita subir el Keep.</p>';
+  }
+
+  html += '<h3 class="route-sub">Minas: esencia, de menor a mayor nivel</h3>';
+  html += '<details class="more" style="margin-top:10px"><summary>Ver detalle de minas (esencia)</summary><div class="table-wrap"><table class="data" style="min-width:860px"><thead><tr><th>Paso</th><th>Nivel</th><th>Minas</th><th>Esencia/mina</th><th>Esencia total</th><th>Esencia acumulada</th><th>Producción acumulada</th><th>Capacidad acumulada</th><th>Keep mín.</th></tr></thead><tbody>';
+  mines.forEach(m => {
+    html += '<tr><td class="num">' + next() + '</td><td><strong>N' + m.level + '</strong></td><td class="num">' + m.count + '</td><td class="num">' + int(m.inc) + '</td><td class="num">' + int(m.cost) + '</td><td class="num">' + int(m.cumEssence) + '</td><td class="num">' + int(m.cumRate) + ' oro/h</td><td class="num">' + int(m.cumCap) + '</td><td class="num">K' + m.keepReq + '</td></tr>';
+  });
+  html += '</tbody><tfoot><tr><td>Total</td><td>—</td><td class="num">' + p.levels.length + '</td><td class="num">—</td><td class="num">' + int(p.essence) + '</td><td class="num">' + int(p.essence) + '</td><td class="num">' + int(p.rate) + ' oro/h</td><td class="num">' + int(p.cap) + '</td><td class="num">—</td></tr></tfoot></table></div></details>';
+
+  html += '<h3 class="route-sub">Royal Mint: tokens</h3>';
+  html += '<div class="route-step"><div class="route-num">' + next() + '</div><div><h3>' + mint.label + '</h3><p>' + (p.total ? '$' + int(p.total) + ' en tokens · ' : '') + 'límite diario ' + money(p.limit) + ' · total para ' + n + ' cuenta' + (n === 1 ? '' : 's') + ': <b>' + money(n * p.total) + '</b>. Es instantáneo: compralo antes de la primera venta.</p></div></div>';
+
+  html += '<h3 class="route-sub">Cobros</h3>';
+  html += '<div class="route-step"><div class="route-num">' + next() + '</div><div><h3>Cobrar y vender</h3><p>' + sell.detail + '. Necesitás ' + p.claims + ' cobro' + (p.claims > 1 ? 's' : '') + ' al día (cada ' + num1(p.fillHours) + ' h). El primer día el tope es $2; después se aplica el límite del Mint. <a href="#cuenta">Ver calendario diario →</a></p></div></div>';
+
+  $("#route").innerHTML = html;
+
+  const farmRate = Number(state.essencePerHour) || 0;
+  const farmHours = farmRate > 0 ? p.essence / farmRate : null;
+  const keepMinutes = keeps.reduce((s,k) => s + k.minutes, 0);
+  const perAccount = '<div class="stat"><small>Dinero por cuenta</small><b>' + money(active.cashOutlay) + '</b></div>' +
+    '<div class="stat"><small>Oro del Keep</small><b>' + int(p.keepGold) + '</b></div>' +
+    '<div class="stat"><small>Esencia por cuenta</small><b>' + int(p.essence) + '</b></div>' +
+    '<div class="stat"><small>Reclamos/día</small><b>' + p.claims + '</b></div>' +
+    '<div class="stat"><small>Producción</small><b>' + int(p.rate) + ' oro/h</b></div>' +
+    '<div class="stat"><small>Llenado</small><b>' + num1(p.fillHours) + ' h</b></div>';
+  const totals = '<div class="stat"><small>Dinero total</small><b>' + money(active.totalCash) + '</b></div>' +
+    '<div class="stat"><small>Oro Keep total</small><b>' + int(active.totalKeepGold) + '</b></div>' +
+    '<div class="stat"><small>Esencia total</small><b>' + int(active.totalEssence) + '</b></div>' +
+    '<div class="stat"><small>Reclamos/día total</small><b>' + int(active.totalClaims) + '</b></div>' +
+    '<div class="stat"><small>Producción total</small><b>' + int(active.totalProduction / 23) + ' oro/h</b></div>' +
+    '<div class="stat"><small>Ganancia máx. total</small><b class="' + (active.totalProfit >= 0 ? 'good' : 'bad') + '">' + money(active.totalProfit) + '</b></div>';
+
+  $("#routeTotals").innerHTML = '<div class="route-total"><h3>Tu resumen</h3>' +
+    '<div class="stats">' + perAccount + totals + '</div>' +
+    '<p class="small" style="margin:12px 0 0;color:var(--muted)">Tiempo de Keep: <b>' + formatMinutes(keepMinutes) + '</b>. ' +
+    (farmHours !== null ? 'Fondeo de esencia: <b>~' + num1(farmHours) + ' h</b> por cuenta (~' + num1(farmHours / 24) + ' días) con ' + int(farmRate) + ' esencia/h. ' : '') +
+    'El oro del Keep es oro que dejás de vender; no es dinero que ponés de tu bolsillo. La esencia se farmea; no se compra en este modelo. Para N cuentas, multiplicá la esencia, el oro y los reclamos por N.</p></div>';
+}
+
+function render(){
+  const opts = {essenceBudget:state.essenceBudget, cashBudget:state.cashBudget, maxClaims:state.maxClaims, objective:state.objective, mintDeposited:state.mintDeposited, countKeepGold:state.countKeepGold};
+  const chosen = choosePlan(state.n, opts);
+  const active = state.level === "auto" ? chosen.best : (chosen.evaluations.find(ev => ev.plan.key === state.level) || chosen.best);
+  renderStaticTable(active.plan.key);
+  renderLevelCards(active.plan.key);
+  renderSimulator(chosen, active, opts);
+  renderAccount(active);
+  renderChart(active);
+  renderDailyTable(active);
+  renderRoute(active);
+  $("#viewAccount").classList.toggle("active", state.view === "account");
+  $("#viewTotal").classList.toggle("active", state.view === "total");
+}
+
+function syncInputs(){
+  $("#nAccounts").value = state.n;
+  $("#nRange").value = state.n;
+  $("#mintLevel").value = state.level;
+  $("#essenceBudget").value = state.essenceBudget;
+  $("#cashBudget").value = state.cashBudget;
+  $("#maxClaims").value = state.maxClaims;
+  $("#objective").value = state.objective;
+  $("#essencePerHour").value = state.essencePerHour;
+  $("#mintDeposited").checked = state.mintDeposited;
+  $("#countKeepGold").checked = state.countKeepGold;
+}
+
+function bind(){
+  const n = $("#nAccounts"), r = $("#nRange");
+  n.addEventListener("input", () => {
+    state.n = clamp(parseInt(n.value,10) || 1, 1, 100);
+    r.value = state.n; saveState(); render();
+  });
+  n.addEventListener("blur", () => { n.value = state.n; });
+  r.addEventListener("input", () => {
+    state.n = clamp(parseInt(r.value,10) || 1, 1, 100);
+    n.value = state.n; saveState(); render();
+  });
+  $("#mintLevel").addEventListener("change", e => {state.level = e.target.value; saveState(); render();});
+  $("#essenceBudget").addEventListener("input", e => {state.essenceBudget = e.target.value; saveState(); render();});
+  $("#cashBudget").addEventListener("input", e => {state.cashBudget = e.target.value; saveState(); render();});
+  $("#maxClaims").addEventListener("input", e => {state.maxClaims = e.target.value; saveState(); render();});
+  $("#objective").addEventListener("change", e => {state.objective = e.target.value; saveState(); render();});
+  $("#essencePerHour").addEventListener("input", e => {state.essencePerHour = e.target.value; saveState(); render();});
+  $("#mintDeposited").addEventListener("change", e => {state.mintDeposited = e.target.checked; saveState(); render();});
+  $("#countKeepGold").addEventListener("change", e => {state.countKeepGold = e.target.checked; saveState(); render();});
+  $("#viewAccount").addEventListener("click", () => {state.view = "account"; saveState(); render();});
+  $("#viewTotal").addEventListener("click", () => {state.view = "total"; saveState(); render();});
+  $("#printBtn").addEventListener("click", () => window.print());
+  $("#resetBtn").addEventListener("click", () => {
+    Object.assign(state, DEFAULTS);
+    syncInputs(); saveState(); render();
+  });
+  document.addEventListener("click", e => {
+    const quick = e.target.closest("[data-level]");
+    if (quick && quick.closest("#quickGrid")) { selectLevel(quick.dataset.level, true); return; }
+    const card = e.target.closest(".level-card");
+    if (card && card.closest("#levelCards")) { selectLevel(card.dataset.level, true); return; }
+    const row = e.target.closest("tr[data-level]");
+    if (row && row.closest("#staticTableBody")) { selectLevel(row.dataset.level, true); return; }
+    if (row && row.closest("#compareBody")) { selectLevel(row.dataset.level, false); }
+  });
+}
+
+function selectLevel(key, scroll){
+  state.level = key;
+  $("#mintLevel").value = key;
+  saveState();
+  render();
+  if (scroll) document.getElementById("simulador").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+loadState();
+buildMintOptions();
+syncInputs();
+bind();
+renderQuickCards();
+render();
+})();
+</script>
+</body>
+</html>
